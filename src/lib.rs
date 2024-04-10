@@ -45,9 +45,13 @@ pub mod dataset;
 
 /// Module for some data preprocessing functionality.
 ///
-/// Currently supports:
-/// - Scalers:
+/// Encoders:
+/// - Label encoder.
+///
+/// Scalers:
 ///     - MinMax scaler.
 pub mod preprocessing {
+    pub mod encoders;
     pub mod scalers;
 }
+
