@@ -10,19 +10,17 @@ use std::error;
 use std::fmt;
 
 /// Enum for our defined error kinds.
-/// 
-/// Variants:
-/// - InvalidParameters: Parameters passed or used are invalid.
-/// - InvalidData: Error with the input data.
-/// - InvalidState: Model is in an invalid state.
-/// - UntrainedModel: Trying to perform an invalid action on an unfitted model.
-/// - LinAlgError: Linear algebra module error.
 #[derive(Debug)]
 pub enum ErrorKind {
+    /// Parameters passed or used are invalid. 
     InvalidParameters,
+    /// Error with the input data.
     InvalidData,
+    /// Model is in an invalid state.
     InvalidState,
+    /// Trying to perform an invalid action on an unfitted model.
     UntrainedModel,
+    /// Linear algebra module error.
     LinAlgError
 }
 
