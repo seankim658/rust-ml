@@ -15,8 +15,8 @@ Learning Rust and brushing up on basic machine learning concepts by building a s
 
 ## Current Progress
 
-Really nothing has been completed fully yet except for some of the foundational concepts used throughout the library. Documentation is being written as things are developed and the current API documentation can be found [here]().
+Really nothing has been completed fully yet except for some of the foundational concepts used throughout the library. Documentation is being written as things are developed. 
 
 ## In Progress
 
-Currently working on the implementation of the `Dataset` module. The module lays out the foundation for the Dataset type and some basic functionality, such as reading from a CSV file. Once that has been finished, going to finish implementing a basic, built-in Iris dataset that I can use for testing. Next, plan on building out some basic preprocessing tools such as a MinMax Scaler. 
+Currently working on the implementation of the `Dataset` module. The module lays out the foundation for the Dataset type and some basic functionality, such as reading from a CSV file. Using the included Iris dataset, going to implement some preprocessing features such as a label encoder. 
