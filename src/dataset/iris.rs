@@ -17,10 +17,26 @@
 //! The target is the `Species` column, `Vector<usize>`.
 //!
 //! ## Examples
+//! 
+//! ```
+//! use rust_ml::dataset::iris;
+//! use rust_ml::linalg::BaseMatrix;
+//!
+//! let iris_dataset = iris::load();
+//! 
+//! assert_eq!(150, iris_dataset.data().rows());
+//! assert_eq!(5, iris_dataset.data().cols());
+//! ```
 
 use crate::linalg::{Matrix, Vector};
 use super::Dataset;
 
-pub fn load() -> Dataset<Matrix<f64>, Vec<usize>> {
-
+/// Loads the default Iris dataset.
+///
+/// ## Panics
+///
+/// If filepath is incorrect.
+/// 
+pub fn load() -> Dataset<Matrix<f64>, Vector<String>> {
+    Dataset::from_csv("./src/dataset/data/iris.csv", "Species").unwrap()
 }
