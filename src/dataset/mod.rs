@@ -7,14 +7,14 @@ use crate::base::MLResult;
 use crate::linalg::Matrix;
 use crate::linalg::Vector;
 
-use csv::ReaderBuilder;
+use csv::{ReaderBuilder, StringRecordIter};
 use num::Float;
 use std::fmt::Debug;
 use std::fs::File;
 use std::path::Path;
 use std::str::FromStr;
 
-/// Loads the infamous UCI Iris dataset.
+/// Module for pre-set UCI Iris dataset.
 pub mod iris;
 
 /// Struct for a datatset.
@@ -22,7 +22,8 @@ pub mod iris;
 /// Fields:
 /// - data: The features.
 /// - target: The targets.
-/// - columns: Vector of the feature column names (in order relative to data).
+/// - data_columns: Vector of the feature column names (in order relative to data).
+/// - target_column: The name of the target column.
 ///
 #[derive(Clone, Debug)]
 pub struct Dataset<X, Y>
@@ -52,21 +53,32 @@ where
         }
     }
 
-    /// Gets the features.
+    /// Gets the features value.
     pub fn data(&self) -> &X {
         &self.data
     }
 
-    /// Gets the targets.
+    /// Gets the targets value.
     pub fn target(&self) -> &Y {
         &self.target
+    }
+
+    /// Gets the data_columns value.
+    pub fn data_columns(&self) -> &Vector<String> {
+        &self.data_columns
+    }
+
+    /// Gets the target_column value.
+    pub fn target_column(&self) -> &str {
+        &self.target_column
     }
 }
 
 // From functions for the dataset struct.
-impl<X> Dataset<Matrix<X>, Vector<X>>
+impl<X, Y> Dataset<Matrix<X>, Vector<Y>>
 where
     X: Float + Debug + FromStr,
+    Y: Debug + Clone + FromStr,
 {
     /// Creates a Dataset struct from a CSV file. All
     /// features columns have to be of the same, numeric
@@ -86,7 +98,8 @@ where
         // Isolate the header row.
         let headers = rdr
             .headers()
-            .map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
+            .map_err(|e| Error::new(ErrorKind::InvalidData, e))?
+            .clone();
 
         // Make sure target column exists in the file data.
         let target_index = headers
@@ -107,7 +120,7 @@ where
             let mut record_features = Vec::new();
             for (index, feature) in record.iter().enumerate() {
                 if index == target_index {
-                    let record_target = X::from_str(feature).map_err(|_| {
+                    let record_target = Y::from_str(feature).map_err(|_| {
                         Error::new(
                             ErrorKind::InvalidData,
                             format!("Failed to parse target value {}", feature),
@@ -116,27 +129,28 @@ where
                     target_values.push(record_target);
                 } else {
                     let feature_value = X::from_str(feature).map_err(|_| {
-                        Error::new(ErrorKind::InvalidData, format!("Failed to parse value {} in column {}", feature, index))
+                        Error::new(
+                            ErrorKind::InvalidData,
+                            format!("Failed to parse value {} in column {}", feature, index),
+                        )
                     })?;
                     record_features.push(feature_value);
                 }
             }
             data_rows.push(record_features);
         }
+        let row_dim = data_rows.len();
+        let col_dim = data_rows[0].len();
 
         // Convert the accumulated data into a matrix for the dataset struct.
         let flattened_data: Vec<X> = data_rows.into_iter().flatten().collect();
-        let data = Matrix::new(
-            data_rows.len(),
-            data_rows[0].len(),
-            flattened_data
-        );
+        let data = Matrix::new(row_dim, col_dim, flattened_data);
 
-        Ok(Dataset {
+        Ok(Dataset::new(
             data,
-            target: Vector::new(target_values),
-            data_columns: headers.iter().map(|s| s.to_string()).collect(),
-            target_column: String::from(target_column),
-        })
+            Vector::new(target_values),
+            headers.iter().filter(|&h| h != target_column).map(|s| s.to_string()).collect(),
+            String::from(target_column),
+        ))
     }
 }
