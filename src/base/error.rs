@@ -1,11 +1,3 @@
-//! # Error
-//!
-//! This module implements the basic error types for the library.
-//!
-//! ## Structure
-//!
-//! ## Examples
-
 use std::error;
 use std::fmt;
 
@@ -25,27 +17,23 @@ pub enum ErrorKind {
 }
 
 /// Struct for an error.
-///
-/// Fields:
-/// - kind: The ErrorKind enum value for more context.
-/// - error: Thread safe wrapper for Rust errors.
-///
 #[derive(Debug)]
 pub struct Error {
+    /// The ErrorKind enum value for more context.
     kind: ErrorKind,
+    /// Thread safe wrapper for Rust errors.
     error: Box<dyn error::Error + Send + Sync>,
 }
 
-/// Creates the Error methods.
 impl Error {
 
     /// Constructor.
     ///
-    /// Parameters
+    /// Parameters:
     /// - kind: The ErrorKind enum.
     /// - error: Generic that implements Into Box.
     ///
-    /// Returns
+    /// Returns:
     /// - New error struct.
     ///
     pub fn new<E>(kind: ErrorKind, error: E) -> Error
@@ -59,10 +47,10 @@ impl Error {
 
     /// Method to get the error kind variant.
     ///
-    /// Parameters
+    /// Parameters:
     /// - &self: Reference to self (of type Error).
     ///
-    /// Returns
+    /// Returns:
     /// - The ErrorKind variant.
     ///
     pub fn kind(&self) -> &ErrorKind {
