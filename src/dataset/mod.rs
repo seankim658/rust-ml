@@ -1,39 +1,61 @@
 //! # Dataset Module
 //!
-//! This module defines the simple structure for datasets.
+//! Handles the basic Dataset concept used for the tools in this crate.
+//!
+//! ## Examples
+//!
+//! ```
+//! use rust_ml::dataset::Dataset;
+//! use rust_ml::linalg::{Matrix, BaseMatrix, Vector};
+//!
+//! let dataset = Dataset::new(
+//!     Matrix::new(2, 2, Vector::new(vec![1.0, 2.0, 3.0, 4.0])),
+//!     Vector::new(vec![1.0, 2.0, 3.0]),
+//!     Vector::new(vec!["feature_1".to_string(), "feature_2".to_string()]),
+//!     "label".to_string(),
+//! );
+//!
+//! assert_eq!(2, dataset.data().rows());
+//! assert_eq!(2, dataset.data().cols());
+//! assert_eq!(
+//!     &Vector::new(vec![
+//!         "feature_1".to_string(), 
+//!         "feature_2".to_string()
+//!     ]),
+//!     dataset.data_columns(),
+//! );
+//! assert_eq!("label", dataset.target_column());
+//! ```
 
 use crate::base::error::{Error, ErrorKind};
 use crate::base::MLResult;
 use crate::linalg::Matrix;
 use crate::linalg::Vector;
 
-use csv::{ReaderBuilder, StringRecordIter};
+use csv::ReaderBuilder;
 use num::Float;
 use std::fmt::Debug;
 use std::fs::File;
 use std::path::Path;
 use std::str::FromStr;
 
-/// Module for pre-set UCI Iris dataset.
+/// Module for UCI Iris dataset.
 pub mod iris;
 
 /// Struct for a datatset.
-///
-/// Fields:
-/// - data: The features.
-/// - target: The targets.
-/// - data_columns: Vector of the feature column names (in order relative to data).
-/// - target_column: The name of the target column.
-///
 #[derive(Clone, Debug)]
 pub struct Dataset<X, Y>
 where
     X: Clone + Debug,
     Y: Clone + Debug,
 {
+    /// The feature matrix.
     data: X,
+    /// The label vector.
     target: Y,
+    /// The data column headers (not including target column header).
     data_columns: Vector<String>,
+    /// The target (label) column header.
     target_column: String,
 }
 
@@ -74,7 +96,6 @@ where
     }
 }
 
-// From functions for the dataset struct.
 impl<X, Y> Dataset<Matrix<X>, Vector<Y>>
 where
     X: Float + Debug + FromStr,
@@ -85,9 +106,12 @@ where
     /// type. The taret column can be a categorical value
     /// but it will be automatically label encoded.
     ///
-    /// Parameters
+    /// Parameters:
     /// - filepath: A Path reference.
     /// - target_column: The target column name.
+    ///
+    /// Returns:
+    /// - The loaded dataset in an MLResult instance.
     ///
     pub fn from_csv<P: AsRef<Path>>(file_path: P, target_column: &str) -> MLResult<Self> {
         let file =
@@ -149,7 +173,11 @@ where
         Ok(Dataset::new(
             data,
             Vector::new(target_values),
-            headers.iter().filter(|&h| h != target_column).map(|s| s.to_string()).collect(),
+            headers
+                .iter()
+                .filter(|&h| h != target_column)
+                .map(|s| s.to_string())
+                .collect(),
             String::from(target_column),
         ))
     }
