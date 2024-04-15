@@ -1,29 +1,32 @@
-//! # Rust-ML
+//! # Rust_ML Crate
 //!
 //! A simple Rust machine learning library.
 //!
-//! ## Structure
+//! ## Features
+//! 
+//! Datasets:
+//! - Iris dataset.
 //!
-//! Currently supported machine learning techniques:
+//! Encoders:
+//! - Label encoder.
 //!
-//! - Linear Regression
+//! Scalers:
+//! - MinMax scaler.
 //!
 //! ## Examples
 //!
 //!
 
 /// Re-exports of commonnly used rulinalg (`https://github.com/AtheMathmo/rulinalg`) linear
-/// algebra tools.
+/// algebra tools and data types.
 ///
-/// rulinalg::matrix : 
+/// Re-exports: 
 /// - Axes: Enum for column or row indication.
 /// - Matrix: Struct for the matrix. 
 /// - MatrixSlice: Struct to provide a slice into a matrix.
 /// - MatrixSliceMut: Struct to provide a mutable slice into a matrix.
 /// - BaseMatrix: Trait for immutable matrix structs.
 /// - BaseMatrixMut: Trait for mutable matrix structs.
-///
-/// rulinalg::vector tools:
 /// - Vector: Struct for vectors.
 pub mod linalg {
     pub use rulinalg::matrix::{Axes, Matrix, MatrixSlice, MatrixSliceMut, BaseMatrix, BaseMatrixMut};
@@ -44,14 +47,4 @@ pub mod base {
 pub mod dataset;
 
 /// Module for some data preprocessing functionality.
-///
-/// Encoders:
-/// - Label encoder.
-///
-/// Scalers:
-///     - MinMax scaler.
-pub mod preprocessing {
-    pub mod encoders;
-    pub mod scalers;
-}
-
+pub mod preprocessing; 
