@@ -19,7 +19,7 @@
 //! assert_eq!(2, dataset.data().cols());
 //! assert_eq!(
 //!     &Vector::new(vec![
-//!         "feature_1".to_string(), 
+//!         "feature_1".to_string(),
 //!         "feature_2".to_string()
 //!     ]),
 //!     dataset.data_columns(),
@@ -75,22 +75,22 @@ where
         }
     }
 
-    /// Gets the features value.
+    /// Returns a reference to the features value.
     pub fn data(&self) -> &X {
         &self.data
     }
 
-    /// Gets the targets value.
+    /// Returns a reference to the targets value.
     pub fn target(&self) -> &Y {
         &self.target
     }
 
-    /// Gets the data_columns value.
+    /// Returns a reference to the data_columns value.
     pub fn data_columns(&self) -> &Vector<String> {
         &self.data_columns
     }
 
-    /// Gets the target_column value.
+    /// Returns a reference to the target_column value.
     pub fn target_column(&self) -> &str {
         &self.target_column
     }
