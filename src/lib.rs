@@ -25,11 +25,13 @@
 /// - Matrix: Struct for the matrix. 
 /// - MatrixSlice: Struct to provide a slice into a matrix.
 /// - MatrixSliceMut: Struct to provide a mutable slice into a matrix.
+/// - Column: Struct 
 /// - BaseMatrix: Trait for immutable matrix structs.
 /// - BaseMatrixMut: Trait for mutable matrix structs.
 /// - Vector: Struct for vectors.
+/// - ColumnMut: Struct for a mutable column of a matrix.
 pub mod linalg {
-    pub use rulinalg::matrix::{Axes, Matrix, MatrixSlice, MatrixSliceMut, BaseMatrix, BaseMatrixMut};
+    pub use rulinalg::matrix::{Axes, Matrix, MatrixSlice, MatrixSliceMut, Column, BaseMatrix, BaseMatrixMut};
     pub use rulinalg::vector::Vector;
 }
 
