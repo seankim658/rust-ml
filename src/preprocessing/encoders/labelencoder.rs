@@ -1,7 +1,7 @@
 //! # Label Encoder Module
 //!
 //! This module defines a simple label encoder. The label encoder
-//! has two capabilities, it can be used to normalize numerica
+//! has two capabilities, it can be used to normalize numerical
 //! labels and to label encode non-numerical labels.
 //!
 //! ## Examples
@@ -29,7 +29,7 @@
 use super::super::{FitStatus, Preprocessor, PreprocessorFitter};
 use crate::base::error::{Error, ErrorKind};
 use crate::base::MLResult;
-use crate::linalg::{BaseMatrix, BaseMatrixMut, Matrix, Vector};
+use crate::linalg::Vector;
 
 use num::Float;
 use std::collections::HashMap;
@@ -129,6 +129,10 @@ where
     V: Float + Clone + Debug,
 {
     /// Fits the label encoder fitter on the given vector.
+    ///
+    /// Parameters:
+    /// - The target vector reference to fit on.
+    ///
     fn fit(mut self, inputs: &Vector<K>) -> MLResult<LabelEncoder<K, V>> {
         self.label_map.clear();
         let mut encoder_value: V = V::zero();
