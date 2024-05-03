@@ -12,8 +12,8 @@
 use super::super::{FitStatus, Preprocessor, PreprocessorFitter};
 use crate::base::error::{Error, ErrorKind};
 use crate::base::MLResult;
-use crate::linalg::{BaseMatrix, Column, Matrix};
 use crate::dataset::Dataset;
+use crate::linalg::{BaseMatrix, Column, Matrix};
 
 use std::collections::HashMap;
 use std::fmt::Debug;
@@ -25,22 +25,46 @@ pub struct OneHotEncoder {
 }
 
 /// Struct that defines the parameters that are passed into the OHE fitter.
-pub struct OheParams<'a, T, X, Y> 
+pub struct OheParams<'a, T, X, Y>
 where
     X: Clone + Debug,
     Y: Clone + Debug,
 {
-    pub dataset: Dataset<X, Y>,
+    pub dataset: &'a Dataset<X, Y>,
     /// The column name of the column to be one hot encoded.
     pub column_name: &'a str,
     /// The column to be one hot encoded.
     pub column: &'a Column<'a, T>,
 }
 
+impl<X, Y> Preprocessor<Dataset<X, Y>> for OneHotEncoder
+where
+    X: BaseMatrix + Clone + Debug,
+    Y: Clone + Debug,
+{
+    type O = Dataset<Matrix<f64>, Y>;
+
+    fn transform(&mut self, dataset: &Dataset<X, Y>) -> MLResult<Self::O> {
+        // Retrieve the index of the column to encode from the dataset.
+        let column_index = dataset
+            .data_columns()
+            .iter()
+            .position(|x| x == &self.fitter.column_name)
+            .ok_or_else(|| {
+                Error::new(
+                    ErrorKind::InvalidData,
+                    format!("Column {} to one hot encode not found.", self.fitter.column_name),
+                )
+            })?;
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct OneHotEncoderFitter {
     /// Holds the categories found in the column.
     category_map: HashMap<String, usize>,
+    /// The name of the column being encoded.
+    column_name: String,
     /// Indicates whether the fitter has been fit.
     fit: FitStatus,
 }
@@ -66,6 +90,7 @@ where
         }
 
         self.category_map = category_map;
+        self.column_name = params.column_name.to_string();
         self.fit = FitStatus::Fit;
 
         Ok(OneHotEncoder { fitter: self })
