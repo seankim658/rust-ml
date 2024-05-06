@@ -1,6 +1,6 @@
 //! # Dataset Module
 //!
-//! Handles the basic Dataset concept used for the tools in this crate.
+//! Handles the basic Dataset concepts used for the tools in this crate.
 //!
 //! ## Examples
 //!
@@ -41,6 +41,8 @@ use std::str::FromStr;
 
 /// Module for UCI Iris dataset.
 pub mod iris;
+/// Module for Pokemon stats dataset.
+pub mod pokemon;
 
 /// Struct for a datatset.
 #[derive(Clone, Debug)]
@@ -85,12 +87,12 @@ where
         &self.target
     }
 
-    /// Returns a reference to the data_columns value.
+    /// Returns a reference to the data_columns vector.
     pub fn data_columns(&self) -> &Vector<String> {
         &self.data_columns
     }
 
-    /// Returns a reference to the target_column value.
+    /// Returns a reference to the target_column name.
     pub fn target_column(&self) -> &str {
         &self.target_column
     }
@@ -101,10 +103,8 @@ where
     X: Float + Debug + FromStr,
     Y: Debug + Clone + FromStr,
 {
-    /// Creates a Dataset struct from a CSV file. All
-    /// features columns have to be of the same, numeric
-    /// type. The taret column can be a categorical value
-    /// but it will be automatically label encoded.
+    /// Creates a Dataset struct from a CSV file. All features columns have to be of
+    /// the same, numeric type. The taret column can be a categorical value.
     ///
     /// Parameters:
     /// - filepath: A Path reference.
@@ -114,27 +114,11 @@ where
     /// - The loaded dataset in an MLResult instance.
     ///
     pub fn from_csv<P: AsRef<Path>>(file_path: P, target_column: &str) -> MLResult<Self> {
-        let file =
-            File::open(file_path.as_ref()).map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
-        // Create the csv Reader from the file (assumes headers are available).
+        let file = File::open(file_path).map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
+        // Create the csv reader from the file (assumes headers are available).
         let mut rdr = ReaderBuilder::new().has_headers(true).from_reader(file);
 
-        // Isolate the header row.
-        let headers = rdr
-            .headers()
-            .map_err(|e| Error::new(ErrorKind::InvalidData, e))?
-            .clone();
-
-        // Make sure target column exists in the file data.
-        let target_index = headers
-            .iter()
-            .position(|h| h == target_column)
-            .ok_or_else(|| {
-                Error::new(
-                    ErrorKind::InvalidData,
-                    format!("Target column {} not found in CSV file.", target_column),
-                )
-            })?;
+        let (headers, target_index) = process_headers(&mut rdr, target_column)?;
 
         let mut data_rows = Vec::new();
         let mut target_values = Vec::new();
@@ -173,12 +157,194 @@ where
         Ok(Dataset::new(
             data,
             Vector::new(target_values),
-            headers
-                .iter()
-                .filter(|&h| h != target_column)
-                .map(|s| s.to_string())
-                .collect(),
+            Vector::new(
+                headers
+                    .iter()
+                    .filter(|&h| h != target_column)
+                    .map(|s| s.to_string())
+                    .collect::<Vec<String>>(),
+            ),
             String::from(target_column),
         ))
     }
+}
+
+/// Can represent a numeric or categorical data value.
+#[derive(Debug, Clone, PartialEq)]
+pub enum MixedDataValue {
+    /// Numeric data values are f64s.
+    Numeric(f64),
+    /// Categorical data values are Strings.
+    Categorical(String),
+}
+
+/// Struct for a mixed value dataset. This struct can
+/// support the loading of datasets with mixed data
+/// values. If your dataset contains categorical values
+/// it must be read in as a MixedDataset before using
+/// an encoder to coerce it into a standard Datset.
+#[derive(Debug, Clone)]
+pub struct MixedDataset {
+    /// The 2 dimensional feature vector.
+    data: Vec<Vec<MixedDataValue>>,
+    /// The label vector.
+    target: Vector<MixedDataValue>,
+    /// The data column headers (not including target column header).
+    data_columns: Vector<String>,
+    /// The target (label) column header.
+    target_column: String,
+}
+
+/// Constructor and some getters for the MixedDataset struct.
+impl MixedDataset {
+    /// Constructor.
+    pub fn new(
+        data: Vec<Vec<MixedDataValue>>,
+        target: Vector<MixedDataValue>,
+        data_columns: Vector<String>,
+        target_column: String,
+    ) -> Self {
+        MixedDataset {
+            data,
+            target,
+            data_columns,
+            target_column,
+        }
+    }
+
+    /// Returns a reference to the 2D feature vector.
+    pub fn data(&self) -> &Vec<Vec<MixedDataValue>> {
+        &self.data
+    }
+
+    /// Returns a reference to the target vector.
+    pub fn target(&self) -> &Vector<MixedDataValue> {
+        &self.target
+    }
+
+    /// Returns a reference to the data_columns vector.
+    pub fn data_columns(&self) -> &Vector<String> {
+        &self.data_columns
+    }
+
+    /// Returns a reference to the target_column name.
+    pub fn target_column(&self) -> &str {
+        &self.target_column
+    }
+}
+
+impl MixedDataset {
+    /// Creates a MixedDataset struct from a CSV file. Unlike the `from_csv` method on the
+    /// Dataset struct, this method supports data with categorical features, but you have
+    /// to specify the numeric columns.
+    ///
+    /// Parameters:
+    /// - filepath: A Path reference.
+    /// - target_column: The target column name.
+    /// - numeric_columns: The columns that contain numeric values, other columns will be assumed categorical.
+    ///
+    /// Returns:
+    /// - The loaded dataset in an MLResult instance.
+    ///
+    pub fn from_csv<P: AsRef<Path>>(
+        file_path: P,
+        target_column: &str,
+        numeric_columns: &[&str],
+    ) -> MLResult<Self> {
+        let file = File::open(file_path).map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
+        // Create the csv reader from the file (assumes headers are available).
+        let mut rdr = ReaderBuilder::new().has_headers(true).from_reader(file);
+
+        let (headers, target_index) = process_headers(&mut rdr, target_column)?;
+
+        // Collect indices for columns specified as numeric.
+        let numeric_idxs: Vec<usize> = headers
+            .iter()
+            .enumerate()
+            .filter_map(|(idx, name)| {
+                if numeric_columns.contains(&name) {
+                    Some(idx)
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        let mut data_rows = Vec::new();
+        let mut target_values = Vec::new();
+        // Build the data rows 2d vector and the label vector.
+        for record_result in rdr.records() {
+            let record = record_result.map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
+            let mut record_features = Vec::new();
+            for (index, feature) in record.iter().enumerate() {
+                let data_value = if numeric_idxs.contains(&index) {
+                    MixedDataValue::Numeric(feature.parse::<f64>().map_err(|e| {
+                        Error::new(
+                            ErrorKind::InvalidData,
+                            format!(
+                                "Failed to parse value {} in column {}.\n{}",
+                                feature, index, e
+                            ),
+                        )
+                    })?)
+                } else {
+                    MixedDataValue::Categorical(feature.to_string())
+                };
+
+                if index == target_index {
+                    target_values.push(data_value);
+                } else {
+                    record_features.push(data_value);
+                }
+            }
+            data_rows.push(record_features);
+        }
+        Ok(MixedDataset::new(
+            data_rows,
+            Vector::new(target_values),
+            Vector::new(
+                headers
+                    .iter()
+                    .filter(|&h| h != target_column)
+                    .map(|s| s.to_string())
+                    .collect::<Vec<String>>(),
+            ),
+            String::from(target_column),
+        ))
+    }
+}
+
+/// Helper function that processes the headers in the CSV file and makes sure
+/// the user passed target column exists.
+///
+/// Parameters:
+/// - rdr: The CSV Reader.
+/// - target_column: The target column name.
+///
+/// Returns:
+/// - A Result wrapped tuple containing the isolated header row and the target column
+/// index or an Error.
+///
+fn process_headers<R: std::io::Read>(
+    rdr: &mut csv::Reader<R>,
+    target_column: &str,
+) -> Result<(csv::StringRecord, usize), Error> {
+    // Isolate header row.
+    let headers = rdr
+        .headers()
+        .map_err(|e| Error::new(ErrorKind::InvalidData, e))?
+        .clone();
+
+    // Make sure the target column exists in the file column headers.
+    let target_index = headers
+        .iter()
+        .position(|h| h == target_column)
+        .ok_or_else(|| {
+            Error::new(
+                ErrorKind::InvalidData,
+                format!("Target column {} not found in CSV file.", target_column),
+            )
+        })?;
+
+    Ok((headers, target_index))
 }
