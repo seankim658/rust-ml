@@ -14,7 +14,7 @@
 //! Dataset consists of 150 rows (not including the header row) and
 //! all feature columns are of type f64, `Matrix<f64>`.
 //!
-//! The target is the `Species` column, `Vector<usize>`.
+//! The target is the `Species` column, `Vector<String>`.
 //!
 //! ## Examples
 //! 
