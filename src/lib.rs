@@ -17,7 +17,7 @@
 //!
 //!
 
-/// Re-exports of commonnly used rulinalg (`https://github.com/AtheMathmo/rulinalg`) linear
+/// Re-exports of commonnly used [rulinalg](https://github.com/AtheMathmo/rulinalg) linear
 /// algebra tools and data types.
 ///
 /// Re-exports: 
