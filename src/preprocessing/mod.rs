@@ -6,6 +6,7 @@
 //!
 //! Encoders:
 //! - Label Encoder
+//! - One Hot Encoder
 //!
 //! Scalers:
 //! - MinMax Scaler
