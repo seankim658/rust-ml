@@ -184,11 +184,14 @@ pub enum MixedDataValue {
 /// it must be read in as a MixedDataset before using
 /// an encoder to coerce it into a standard Datset.
 #[derive(Debug, Clone)]
-pub struct MixedDataset {
+pub struct MixedDataset<Y>
+where
+    Y: Clone + Debug,
+{
     /// The 2 dimensional feature vector.
     data: Vec<Vec<MixedDataValue>>,
     /// The label vector.
-    target: Vector<MixedDataValue>,
+    target: Y,
     /// The data column headers (not including target column header).
     data_columns: Vector<String>,
     /// The target (label) column header.
@@ -196,11 +199,14 @@ pub struct MixedDataset {
 }
 
 /// Constructor and some getters for the MixedDataset struct.
-impl MixedDataset {
+impl<Y> MixedDataset<Y>
+where
+    Y: Clone + Debug,
+{
     /// Constructor.
     pub fn new(
         data: Vec<Vec<MixedDataValue>>,
-        target: Vector<MixedDataValue>,
+        target: Y,
         data_columns: Vector<String>,
         target_column: String,
     ) -> Self {
@@ -218,7 +224,7 @@ impl MixedDataset {
     }
 
     /// Returns a reference to the target vector.
-    pub fn target(&self) -> &Vector<MixedDataValue> {
+    pub fn target(&self) -> &Y {
         &self.target
     }
 
@@ -233,7 +239,10 @@ impl MixedDataset {
     }
 }
 
-impl MixedDataset {
+impl<Y> MixedDataset<Vector<Y>>
+where
+    Y: Debug + Clone + FromStr,
+{
     /// Creates a MixedDataset struct from a CSV file. Unlike the `from_csv` method on the
     /// Dataset struct, this method supports data with categorical features, but you have
     /// to specify the numeric columns.
@@ -292,7 +301,13 @@ impl MixedDataset {
                 };
 
                 if index == target_index {
-                    target_values.push(data_value);
+                    let record_target = Y::from_str(feature).map_err(|_| {
+                        Error::new(
+                            ErrorKind::InvalidData,
+                            format!("Failed to parse target value {}", feature),
+                        )
+                    })?;
+                    target_values.push(record_target);
                 } else {
                     record_features.push(data_value);
                 }
