@@ -21,7 +21,7 @@
 //! let pokemon_dataset = pokemon::load();
 //!
 //! assert_eq!(800, pokemon_dataset.data().len());
-//! assert_eq!(12, pokemon_dataset.data()[0].len());
+//! assert_eq!(11, pokemon_dataset.data()[0].len());
 //! ```
 
 use super::MixedDataset;
