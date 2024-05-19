@@ -25,14 +25,15 @@
 //! ```
 
 use super::MixedDataset;
+use crate::linalg::Vector;
 
 /// Loads the default Pokemon dataset.
 ///
-/// ## Panics 
+/// ## Panics
 ///
 /// If filepath is incorrect.
 ///
-pub fn load() -> MixedDataset {
+pub fn load() -> MixedDataset<Vector<String>> {
     let numeric_columns = ["#", "Total", "HP", "Attack", "Defense", "Sp. Atk", "Sp. Def", "Speed", "Generation"];
     MixedDataset::from_csv("./src/dataset/data/pokemon.csv", "Legendary", &numeric_columns).unwrap()
 }
