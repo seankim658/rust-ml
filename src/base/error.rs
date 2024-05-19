@@ -29,11 +29,11 @@ impl Error {
 
     /// Constructor.
     ///
-    /// Parameters:
+    /// #### Parameters:
     /// - kind: The ErrorKind enum.
     /// - error: Generic that implements Into Box.
     ///
-    /// Returns:
+    /// #### Returns:
     /// - New error struct.
     ///
     pub fn new<E>(kind: ErrorKind, error: E) -> Error
@@ -47,10 +47,10 @@ impl Error {
 
     /// Method to get the error kind variant.
     ///
-    /// Parameters:
+    /// #### Parameters:
     /// - &self: Reference to self (of type Error).
     ///
-    /// Returns:
+    /// #### Returns:
     /// - The ErrorKind variant.
     ///
     pub fn kind(&self) -> &ErrorKind {

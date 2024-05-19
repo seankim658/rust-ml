@@ -12,6 +12,21 @@
 //! contains 720 Pokemon from generations 1-6 (due to regional 
 //! variants, there are some pokemon with multiple rows).
 //!
+//! The dataset consists of 2 categorical features and 9 numerical features:
+//! - Categorical features:
+//!   - Type 1 (primary pokemon typing)
+//!   - Type 2 (secondary pokemon typing)
+//! - Numeric features:
+//!   - # (pokedex number)
+//!   - Total (base stat total)
+//!   - HP (health points stat)
+//!   - Attack (physical attack stat)
+//!   - Defense (physical defense stat)
+//!   - Sp. Atk (special attack stat)
+//!   - Sp. Def (special defense stat)
+//!   - Speed (speed stat)
+//!   - Generation (generation the pokemon was introduced)
+//! 
 //! The default target is the `Legendary` column, `Vector<String>`.
 //!
 //! ## Examples 

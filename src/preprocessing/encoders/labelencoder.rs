@@ -63,10 +63,16 @@ where
     K: Clone + Debug + Eq + Hash,
     V: Float + Clone + Debug,
 {
-    /// Define the output type.
     type O = Vector<V>;
 
     /// Transforms the Vector based on the fitted Label Encoder hash map.
+    ///
+    /// #### Parameters:
+    /// - inputs: A reference to the label vector.
+    ///
+    /// #### Returns:
+    /// - MLResult wrapped label encoded label vector.
+    ///
     fn transform(&mut self, inputs: &Vector<K>) -> MLResult<Vector<V>> {
         let mut mapped_vec = Vec::with_capacity(inputs.size());
         for element in inputs {
@@ -130,16 +136,19 @@ where
 {
     /// Fits the label encoder fitter on the given vector.
     ///
-    /// Parameters:
-    /// - The target vector reference to fit on.
+    /// #### Parameters:
+    /// - input: The categorical label vector to encode.
     ///
-    fn fit(mut self, inputs: &Vector<K>) -> MLResult<LabelEncoder<K, V>> {
+    /// #### Returns:
+    /// - MLResult wrapped LabelEncoder.
+    ///
+    fn fit(mut self, input: &Vector<K>) -> MLResult<LabelEncoder<K, V>> {
         self.label_map.clear();
         let mut encoder_value: V = V::zero();
 
-        for input in inputs {
-            if !self.label_map.contains_key(input) {
-                self.label_map.insert(input.clone(), encoder_value);
+        for value in input {
+            if !self.label_map.contains_key(value) {
+                self.label_map.insert(value.clone(), encoder_value);
                 encoder_value = encoder_value + V::one();
             }
         }

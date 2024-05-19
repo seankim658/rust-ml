@@ -106,11 +106,11 @@ where
     /// Creates a Dataset struct from a CSV file. All features columns have to be of
     /// the same, numeric type. The taret column can be a categorical value.
     ///
-    /// Parameters:
+    /// #### Parameters:
     /// - filepath: A Path reference.
     /// - target_column: The target column name.
     ///
-    /// Returns:
+    /// #### Returns:
     /// - The loaded dataset in an MLResult instance.
     ///
     pub fn from_csv<P: AsRef<Path>>(file_path: P, target_column: &str) -> MLResult<Self> {
@@ -247,12 +247,12 @@ where
     /// Dataset struct, this method supports data with categorical features, but you have
     /// to specify the numeric columns.
     ///
-    /// Parameters:
+    /// #### Parameters:
     /// - filepath: A Path reference.
     /// - target_column: The target column name.
     /// - numeric_columns: The columns that contain numeric values, other columns will be assumed categorical.
     ///
-    /// Returns:
+    /// #### Returns:
     /// - The loaded dataset in an MLResult instance.
     ///
     pub fn from_csv<P: AsRef<Path>>(
@@ -332,11 +332,11 @@ where
 /// Helper function that processes the headers in the CSV file and makes sure
 /// the user passed target column exists.
 ///
-/// Parameters:
+/// #### Parameters:
 /// - rdr: The CSV Reader.
 /// - target_column: The target column name.
 ///
-/// Returns:
+/// #### Returns:
 /// - A Result wrapped tuple containing the isolated header row and the target column
 /// index or an Error.
 ///
