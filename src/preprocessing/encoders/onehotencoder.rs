@@ -19,19 +19,19 @@ use std::fmt::Debug;
 
 /// Struct for the One Hot Encoder.
 #[derive(Clone, Debug)]
-pub struct OneHotEncoder {
+pub struct OneHotEncoder<Y> {
     /// The fitter.
-    fitter: OneHotEncoderFitter,
+    fitter: OneHotEncoderFitter<Y>,
 }
 
-impl OneHotEncoder {
+impl<Y> OneHotEncoder<Y> {
     /// Returns a reference to the fitter struct.
-    pub fn fitter(&self) -> &OneHotEncoderFitter {
+    pub fn fitter(&self) -> &OneHotEncoderFitter<Y> {
         &self.fitter
     }
 }
 
-impl<Y> Preprocessor<MixedDataset<Vector<Y>>> for OneHotEncoder
+impl<Y> Preprocessor<MixedDataset<Vector<Y>>> for OneHotEncoder<Y>
 where
     Y: Clone + Debug,
 {
@@ -98,29 +98,31 @@ where
 }
 
 #[derive(Clone, Debug)]
-pub struct OneHotEncoderFitter {
+pub struct OneHotEncoderFitter<Y> {
     /// Holds the categories found in the columns to be encoded.
     pub category_map: HashMap<String, HashMap<String, usize>>,
     /// Indicates whether the fitter has been fit.
     fit: FitStatus,
+    phantom: std::marker::PhantomData<Y>,
 }
 
-impl Default for OneHotEncoderFitter {
+impl<Y> Default for OneHotEncoderFitter<Y> {
     /// Creates an initial, default One Hot Encoder fitter.
     fn default() -> Self {
         Self {
             category_map: HashMap::default(),
             fit: FitStatus::default(),
+            phantom: std::marker::PhantomData,
         }
     }
 }
 
-impl<Y> PreprocessorFitter<MixedDataset<Vector<Y>>, OneHotEncoder> for OneHotEncoderFitter
+impl<Y> PreprocessorFitter<MixedDataset<Vector<Y>>, OneHotEncoder<Y>> for OneHotEncoderFitter<Y>
 where
     Y: Clone + Debug,
 {
     /// Fits the one hot encoder on a given dataset column.
-    fn fit(mut self, input: &MixedDataset<Vector<Y>>) -> MLResult<OneHotEncoder> {
+    fn fit(mut self, input: &MixedDataset<Vector<Y>>) -> MLResult<OneHotEncoder<Y>> {
         self.category_map.clear();
         let mut category_map = HashMap::new();
 
