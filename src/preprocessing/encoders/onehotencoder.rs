@@ -1,102 +1,153 @@
 //! # One Hot Encoder Module
 //!
 //! This module defines the one hot encoder. The one hot encoder
-//! encodes categorical features as a one-hot numeric array. The
+//! encodes all categorical features in a `MixedDataset`. The
 //! encoder will automatically determine the categories from the
-//! training data.
+//! data.
 //!
 //! ## Examples
 //! ```
 //! ```
 
 use super::super::{FitStatus, Preprocessor, PreprocessorFitter};
-use crate::base::error::{Error, ErrorKind};
 use crate::base::MLResult;
-use crate::dataset::Dataset;
-use crate::linalg::{BaseMatrix, Column, Matrix};
+use crate::dataset::{Dataset, MixedDataValue, MixedDataset};
+use crate::linalg::{Matrix, Vector};
 
 use std::collections::HashMap;
 use std::fmt::Debug;
-use std::hash::Hash;
 
+/// Struct for the One Hot Encoder.
 #[derive(Clone, Debug)]
 pub struct OneHotEncoder {
+    /// The fitter.
     fitter: OneHotEncoderFitter,
 }
 
-/// Struct that defines the parameters that are passed into the OHE fitter.
-pub struct OheParams<'a, T, X, Y>
-where
-    X: Clone + Debug,
-    Y: Clone + Debug,
-{
-    pub dataset: &'a Dataset<X, Y>,
-    /// The column name of the column to be one hot encoded.
-    pub column_name: &'a str,
-    /// The column to be one hot encoded.
-    pub column: &'a Column<'a, T>,
+impl OneHotEncoder {
+    /// Returns a reference to the fitter struct.
+    pub fn fitter(&self) -> &OneHotEncoderFitter {
+        &self.fitter
+    }
 }
 
-impl<X, Y> Preprocessor<Dataset<X, Y>> for OneHotEncoder
+impl<Y> Preprocessor<MixedDataset<Vector<Y>>> for OneHotEncoder
 where
-    X: BaseMatrix + Clone + Debug,
     Y: Clone + Debug,
 {
-    type O = Dataset<Matrix<f64>, Y>;
+    type O = Dataset<Matrix<f64>, Vector<Y>>;
 
-    fn transform(&mut self, dataset: &Dataset<X, Y>) -> MLResult<Self::O> {
-        // Retrieve the index of the column to encode from the dataset.
-        let column_index = dataset
-            .data_columns()
-            .iter()
-            .position(|x| x == &self.fitter.column_name)
-            .ok_or_else(|| {
-                Error::new(
-                    ErrorKind::InvalidData,
-                    format!("Column {} to one hot encode not found.", self.fitter.column_name),
-                )
-            })?;
+    fn transform(&mut self, inputs: &MixedDataset<Vector<Y>>) -> MLResult<Self::O> {
+        let mut transformed_data = Vec::new();
+        let mut new_column_names = Vec::new();
+
+        // Add the new one hot encoded categorical column names defined
+        // during the fitting process.
+        for col_name in inputs.data_columns().iter() {
+            if let Some(map) = self.fitter.category_map.get(col_name) {
+                for category in map.keys() {
+                    new_column_names.push(format!("{}_{}", col_name, category));
+                }
+            } else {
+                new_column_names.push(col_name.clone());
+            }
+        }
+
+        // Handle the data transformation.
+        for row in inputs.data() {
+            let mut new_row = Vec::new();
+            for (col_index, value) in row.iter().enumerate() {
+                let col_name = &inputs.data_columns()[col_index];
+                match value {
+                    // For categorical values, look up the encoding map for the
+                    // column and initialize the zero-filled vector of the
+                    // appropriate length. Then set the corresponding index
+                    // to 1 for the one hot encoded binary value.
+                    MixedDataValue::Categorical(val) => {
+                        if let Some(map) = self.fitter.category_map.get(col_name) {
+                            let mut encoded = vec![0.0; map.len()];
+                            if let Some(&index) = map.get(val) {
+                                encoded[index] = 1.0;
+                            }
+                            new_row.extend(encoded);
+                        }
+                    }
+                    // For numerical values, dereference the number value and add
+                    // it to the row as is.
+                    MixedDataValue::Numeric(num) => {
+                        new_row.push(*num);
+                    }
+                }
+            }
+            transformed_data.push(new_row);
+        }
+
+        // Create data Matrix.
+        let row_dimension = transformed_data.len();
+        let column_dimension = transformed_data[0].len();
+        let flattened_data: Vec<f64> = transformed_data.into_iter().flatten().collect();
+        let data = Matrix::new(row_dimension, column_dimension, flattened_data);
+
+        Ok(Dataset::new(
+            data,
+            Vector::new(inputs.target().clone()),
+            Vector::new(new_column_names),
+            inputs.target_column().to_string().clone(),
+        ))
     }
 }
 
 #[derive(Clone, Debug)]
 pub struct OneHotEncoderFitter {
-    /// Holds the categories found in the column.
-    category_map: HashMap<String, usize>,
-    /// The name of the column being encoded.
-    column_name: String,
+    /// Holds the categories found in the columns to be encoded.
+    pub category_map: HashMap<String, HashMap<String, usize>>,
     /// Indicates whether the fitter has been fit.
     fit: FitStatus,
 }
 
-impl<'a, T, X, Y> PreprocessorFitter<OheParams<'a, T, X, Y>, OneHotEncoder> for OneHotEncoderFitter
+impl Default for OneHotEncoderFitter {
+    /// Creates an initial, default One Hot Encoder fitter.
+    fn default() -> Self {
+        Self {
+            category_map: HashMap::default(),
+            fit: FitStatus::default(),
+        }
+    }
+}
+
+impl<Y> PreprocessorFitter<MixedDataset<Vector<Y>>, OneHotEncoder> for OneHotEncoderFitter
 where
-    T: Eq + Hash + Clone + Debug,
-    X: Clone + Debug,
     Y: Clone + Debug,
 {
     /// Fits the one hot encoder on a given dataset column.
-    fn fit(mut self, params: &OheParams<'a, T, X, Y>) -> MLResult<OneHotEncoder> {
+    fn fit(mut self, input: &MixedDataset<Vector<Y>>) -> MLResult<OneHotEncoder> {
+        self.category_map.clear();
         let mut category_map = HashMap::new();
-        let mut next_idx = 0;
 
-        // Use row_iter to iterate over the elements in the column.
-        for value in params.column.row_iter() {
-            category_map.entry(value).or_insert_with(|| {
-                let index = next_idx;
-                next_idx += 1;
-                index
-            })
+        for (col_index, col_name) in input.data_columns().iter().enumerate() {
+            // Initialize a hashmap for current column that will store
+            // mapping from categorical value to their indices.
+            let mut map = HashMap::new();
+
+            for row in input.data() {
+                // On each row, match on the column value to check if it is categorical.
+                if let MixedDataValue::Categorical(value) = &row[col_index] {
+                    // If categorical, capture value as a category in the current column map.
+                    let index = map.len();
+                    map.entry(value.clone()).or_insert_with(|| index);
+                }
+            }
+            // Insert the column map into the fitter category map.
+            if !map.is_empty() {
+                category_map.insert(col_name.clone(), map);
+            }
         }
-
-        self.category_map = category_map;
-        self.column_name = params.column_name.to_string();
         self.fit = FitStatus::Fit;
-
+        self.category_map = category_map;
         Ok(OneHotEncoder { fitter: self })
     }
 
     fn fit_status(&self) -> &FitStatus {
-        &self.fit_status
+        &self.fit
     }
 }
