@@ -4,7 +4,7 @@
 //!
 //! ## Dataset
 //!
-//! The dataset consists of 5 features as follows: 
+//! The dataset consists of 5 features as follows (which are all numeric): 
 //! - Id 
 //! - SepalLength 
 //! - SepalWidth 

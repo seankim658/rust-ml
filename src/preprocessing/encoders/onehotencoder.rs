@@ -7,6 +7,19 @@
 //!
 //! ## Examples
 //! ```
+//! use rust_ml::dataset::{pokemon, MixedDataset};
+//! use rust_ml::linalg::{BaseMatrix, Vector};
+//! use rust_ml::preprocessing::encoders::onehotencoder::OneHotEncoderFitter;
+//! use rust_ml::preprocessing::{FitStatus, Preprocessor, PreprocessorFitter};
+//!
+//! let pokemon_dataset: MixedDataset<Vector<String>> = pokemon::load();
+//!
+//! let ohe_fitter = OneHotEncoderFitter::default();
+//! let mut ohe = ohe_fitter.fit(&pokemon_dataset).unwrap();
+//!
+//! let pokemon_ohe_dataset = ohe.transform(&pokemon_dataset).unwrap();
+//! assert_eq!(pokemon_ohe_dataset.data().rows(), 800);
+//! assert_eq!(pokemon_ohe_dataset.data().cols(), 46);
 //! ```
 
 use super::super::{FitStatus, Preprocessor, PreprocessorFitter};
@@ -37,13 +50,21 @@ where
 {
     type O = Dataset<Matrix<f64>, Vector<Y>>;
 
-    fn transform(&mut self, inputs: &MixedDataset<Vector<Y>>) -> MLResult<Self::O> {
+    /// One hot encodes the categorical columns and returns a Dataset struct.
+    /// 
+    /// #### Parameters:
+    /// - input: Reference to the MixedDataset to encode.
+    ///
+    /// #### Returns:
+    /// - MLResult wrapped Dataset struct.
+    ///
+    fn transform(&mut self, input: &MixedDataset<Vector<Y>>) -> MLResult<Self::O> {
         let mut transformed_data = Vec::new();
         let mut new_column_names = Vec::new();
 
         // Add the new one hot encoded categorical column names defined
         // during the fitting process.
-        for col_name in inputs.data_columns().iter() {
+        for col_name in input.data_columns().iter() {
             if let Some(map) = self.fitter.category_map.get(col_name) {
                 // Make sure one hot encoded column names are in the right order.
                 let mut category_with_indices: Vec<(&String, &usize)> = map.iter().collect();
@@ -57,10 +78,10 @@ where
         }
 
         // Handle the data transformation.
-        for row in inputs.data() {
+        for row in input.data() {
             let mut new_row = Vec::new();
             for (col_index, value) in row.iter().enumerate() {
-                let col_name = &inputs.data_columns()[col_index];
+                let col_name = &input.data_columns()[col_index];
                 match value {
                     // For categorical values, look up the encoding map for the
                     // column and initialize the zero-filled vector of the
@@ -93,20 +114,31 @@ where
 
         Ok(Dataset::new(
             data,
-            Vector::new(inputs.target().clone()),
+            Vector::new(input.target().clone()),
             Vector::new(new_column_names),
-            inputs.target_column().to_string().clone(),
+            input.target_column().to_string().clone(),
         ))
     }
 }
 
+/// Struct for the one hot encoder fitter.
 #[derive(Clone, Debug)]
 pub struct OneHotEncoderFitter<Y> {
     /// Holds the categories found in the columns to be encoded.
-    pub category_map: HashMap<String, HashMap<String, usize>>,
+    category_map: HashMap<String, HashMap<String, usize>>,
     /// Indicates whether the fitter has been fit.
     fit: FitStatus,
     phantom: std::marker::PhantomData<Y>,
+}
+
+impl<Y> OneHotEncoderFitter<Y>
+where
+    Y: Clone + Debug,
+{
+    /// Returns a reference to the category map.
+    pub fn category_map(&self) -> &HashMap<String, HashMap<String, usize>> {
+        &self.category_map
+    }
 }
 
 impl<Y> Default for OneHotEncoderFitter<Y> {
@@ -125,6 +157,13 @@ where
     Y: Clone + Debug,
 {
     /// Fits the one hot encoder on a given dataset column.
+    ///
+    /// #### Parameters:
+    /// - input: Reference to the MixedDataset to encode the categorical columns for.
+    ///
+    /// #### Returns:
+    /// - MLResult wrapped OneHotEncoder.
+    ///
     fn fit(mut self, input: &MixedDataset<Vector<Y>>) -> MLResult<OneHotEncoder<Y>> {
         self.category_map.clear();
         let mut category_map = HashMap::new();
@@ -152,6 +191,7 @@ where
         Ok(OneHotEncoder { fitter: self })
     }
 
+    /// Get the fit status for the preprocessor fitter.
     fn fit_status(&self) -> &FitStatus {
         &self.fit
     }
