@@ -5,11 +5,10 @@ use rust_ml::linalg::Vector;
 fn pokemon_test() {
     let pokemon_dataset = pokemon::load();
     assert_eq!(800, pokemon_dataset.data().len());
-    assert_eq!(12, pokemon_dataset.data()[0].len());
+    assert_eq!(11, pokemon_dataset.data()[0].len());
     assert_eq!(
         &Vector::new(vec![
             "#".to_string(),
-            "Name".to_string(),
             "Type 1".to_string(),
             "Type 2".to_string(),
             "Total".to_string(),
