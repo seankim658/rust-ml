@@ -45,7 +45,10 @@ where
         // during the fitting process.
         for col_name in inputs.data_columns().iter() {
             if let Some(map) = self.fitter.category_map.get(col_name) {
-                for category in map.keys() {
+                // Make sure one hot encoded column names are in the right order.
+                let mut category_with_indices: Vec<(&String, &usize)> = map.iter().collect();
+                category_with_indices.sort_by_key(|&(_, &index)| index);
+                for (category, _) in category_with_indices {
                     new_column_names.push(format!("{}_{}", col_name, category));
                 }
             } else {
