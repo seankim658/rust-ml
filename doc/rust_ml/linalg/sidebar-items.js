@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Axes"],"struct":["Column","Matrix","MatrixSlice","MatrixSliceMut","Vector"],"trait":["BaseMatrix","BaseMatrixMut"]};

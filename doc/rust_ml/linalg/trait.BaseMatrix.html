@@ -1,0 +1,539 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait for immutable matrix structs."><title>BaseMatrix in rust_ml::linalg - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rust_ml" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../rust_ml/index.html">rust_ml</a><span class="version">0.1.0</span></h2></div><h2 class="location"><a href="#">BaseMatrix</a></h2><div class="sidebar-elems"><section><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.as_ptr">as_ptr</a></li><li><a href="#tymethod.cols">cols</a></li><li><a href="#tymethod.row_stride">row_stride</a></li><li><a href="#tymethod.rows">rows</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.as_slice">as_slice</a></li><li><a href="#method.col">col</a></li><li><a href="#method.col_iter">col_iter</a></li><li><a href="#method.col_unchecked">col_unchecked</a></li><li><a href="#method.diag">diag</a></li><li><a href="#method.diag_iter">diag_iter</a></li><li><a href="#method.elediv">elediv</a></li><li><a href="#method.elemul">elemul</a></li><li><a href="#method.get_unchecked">get_unchecked</a></li><li><a href="#method.hcat">hcat</a></li><li><a href="#method.into_matrix">into_matrix</a></li><li><a href="#method.is_diag">is_diag</a></li><li><a href="#method.is_empty">is_empty</a></li><li><a href="#method.iter">iter</a></li><li><a href="#method.max">max</a></li><li><a href="#method.metric">metric</a></li><li><a href="#method.min">min</a></li><li><a href="#method.norm">norm</a></li><li><a href="#method.row">row</a></li><li><a href="#method.row_iter">row_iter</a></li><li><a href="#method.row_unchecked">row_unchecked</a></li><li><a href="#method.select">select</a></li><li><a href="#method.select_cols">select_cols</a></li><li><a href="#method.select_rows">select_rows</a></li><li><a href="#method.solve_l_triangular">solve_l_triangular</a></li><li><a href="#method.solve_u_triangular">solve_u_triangular</a></li><li><a href="#method.split_at">split_at</a></li><li><a href="#method.sub_slice">sub_slice</a></li><li><a href="#method.sum">sum</a></li><li><a href="#method.sum_cols">sum_cols</a></li><li><a href="#method.sum_rows">sum_rows</a></li><li><a href="#method.transpose">transpose</a></li><li><a href="#method.vcat">vcat</a></li></ul><h3><a href="#object-safety">Object Safety</a></h3><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In rust_ml::linalg</a></h2></div></nav><div class="sidebar-resizer"></div>
+    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../rust_ml/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../index.html">rust_ml</a>::<wbr><a href="index.html">linalg</a>::<wbr><a class="trait" href="#">BaseMatrix</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait BaseMatrix&lt;T&gt;: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 37 methods</span></summary>    // Required methods
+    fn <a href="#tymethod.rows" class="fn">rows</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.cols" class="fn">cols</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.row_stride" class="fn">row_stride</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.as_ptr" class="fn">as_ptr</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.pointer.html">*const T</a>;
+
+    // Provided methods
+    fn <a href="#method.is_empty" class="fn">is_empty</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.as_slice" class="fn">as_slice</a>(&amp;self) -&gt; <a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'_, T&gt; { ... }
+<span class="item-spacer"></span>    unsafe fn <a href="#method.get_unchecked" class="fn">get_unchecked</a>(&amp;self, index: [<a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.array.html">2</a>]) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;T</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.col" class="fn">col</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>) -&gt; <a class="struct" href="struct.Column.html" title="struct rust_ml::linalg::Column">Column</a>&lt;'_, T&gt; { ... }
+<span class="item-spacer"></span>    unsafe fn <a href="#method.col_unchecked" class="fn">col_unchecked</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>) -&gt; <a class="struct" href="struct.Column.html" title="struct rust_ml::linalg::Column">Column</a>&lt;'_, T&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.row" class="fn">row</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>) -&gt; Row&lt;'_, T&gt; { ... }
+<span class="item-spacer"></span>    unsafe fn <a href="#method.row_unchecked" class="fn">row_unchecked</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>) -&gt; Row&lt;'_, T&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.iter" class="fn">iter</a>&lt;'a&gt;(&amp;self) -&gt; SliceIter&lt;'a, T&gt;
+       <span class="where">where T: 'a</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.col_iter" class="fn">col_iter</a>(&amp;self) -&gt; Cols&lt;'_, T&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.row_iter" class="fn">row_iter</a>(&amp;self) -&gt; Rows&lt;'_, T&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.diag_iter" class="fn">diag_iter</a>(&amp;self, k: DiagOffset) -&gt; Diagonal&lt;'_, T, Self&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.sum_rows" class="fn">sum_rows</a>(&amp;self) -&gt; <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/identities/trait.Zero.html" title="trait num_traits::identities::Zero">Zero</a>&lt;Output = T&gt; + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Add.html" title="trait core::ops::arith::Add">Add</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.sum_cols" class="fn">sum_cols</a>(&amp;self) -&gt; <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/identities/trait.Zero.html" title="trait num_traits::identities::Zero">Zero</a>&lt;Output = T&gt; + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Add.html" title="trait core::ops::arith::Add">Add</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.norm" class="fn">norm</a>&lt;N&gt;(&amp;self, norm: N) -&gt; T
+       <span class="where">where N: MatrixNorm&lt;T, Self&gt;,
+             T: <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/float/trait.Float.html" title="trait num_traits::float::Float">Float</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.metric" class="fn">metric</a>&lt;'a, 'b, B, M&gt;(&amp;'a self, mat: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;'b B</a>, metric: M) -&gt; T
+       <span class="where">where B: 'b + <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt;,
+             M: MatrixMetric&lt;'a, 'b, T, Self, B&gt;</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.sum" class="fn">sum</a>(&amp;self) -&gt; T
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/identities/trait.Zero.html" title="trait num_traits::identities::Zero">Zero</a>&lt;Output = T&gt; + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Add.html" title="trait core::ops::arith::Add">Add</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.min" class="fn">min</a>(&amp;self, axis: <a class="enum" href="enum.Axes.html" title="enum rust_ml::linalg::Axes">Axes</a>) -&gt; <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/cmp/trait.PartialOrd.html" title="trait core::cmp::PartialOrd">PartialOrd</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.max" class="fn">max</a>(&amp;self, axis: <a class="enum" href="enum.Axes.html" title="enum rust_ml::linalg::Axes">Axes</a>) -&gt; <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/cmp/trait.PartialOrd.html" title="trait core::cmp::PartialOrd">PartialOrd</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.into_matrix" class="fn">into_matrix</a>(self) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.select_rows" class="fn">select_rows</a>&lt;'a, I&gt;(&amp;self, rows: I) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,
+             I: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = &amp;'a <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>&gt;,
+             &lt;I as <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&gt;::<a class="associatedtype" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html#associatedtype.IntoIter" title="type core::iter::traits::collect::IntoIterator::IntoIter">IntoIter</a>: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/exact_size/trait.ExactSizeIterator.html" title="trait core::iter::traits::exact_size::ExactSizeIterator">ExactSizeIterator</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.select_cols" class="fn">select_cols</a>&lt;'a, I&gt;(&amp;self, cols: I) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,
+             I: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = &amp;'a <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>&gt;,
+             &lt;I as <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&gt;::<a class="associatedtype" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html#associatedtype.IntoIter" title="type core::iter::traits::collect::IntoIterator::IntoIter">IntoIter</a>: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/exact_size/trait.ExactSizeIterator.html" title="trait core::iter::traits::exact_size::ExactSizeIterator">ExactSizeIterator</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.elemul" class="fn">elemul</a>(&amp;self, m: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;Self</a>) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Mul.html" title="trait core::ops::arith::Mul">Mul</a>&lt;Output = T&gt;</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.elediv" class="fn">elediv</a>(&amp;self, m: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;Self</a>) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Div.html" title="trait core::ops::arith::Div">Div</a>&lt;Output = T&gt;</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.select" class="fn">select</a>(&amp;self, rows: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>], cols: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>]) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.hcat" class="fn">hcat</a>&lt;S&gt;(&amp;self, m: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;S</a>) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,
+             S: <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt;</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.vcat" class="fn">vcat</a>&lt;S&gt;(&amp;self, m: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;S</a>) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,
+             S: <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt;</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.diag" class="fn">diag</a>(&amp;self) -&gt; Diagonal&lt;'_, T, Self&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.transpose" class="fn">transpose</a>(&amp;self) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_diag" class="fn">is_diag</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.bool.html">bool</a>
+       <span class="where">where T: <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/identities/trait.Zero.html" title="trait num_traits::identities::Zero">Zero</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.solve_u_triangular" class="fn">solve_u_triangular</a>(&amp;self, y: <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.76.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;, Error&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/any/trait.Any.html" title="trait core::any::Any">Any</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/float/trait.Float.html" title="trait num_traits::float::Float">Float</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.solve_l_triangular" class="fn">solve_l_triangular</a>(&amp;self, y: <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.76.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;, Error&gt;
+       <span class="where">where T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/any/trait.Any.html" title="trait core::any::Any">Any</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/float/trait.Float.html" title="trait num_traits::float::Float">Float</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.split_at" class="fn">split_at</a>(
+        &amp;self,
+        mid: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>,
+        axis: <a class="enum" href="enum.Axes.html" title="enum rust_ml::linalg::Axes">Axes</a>
+    ) -&gt; (<a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'_, T&gt;, <a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'_, T&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.sub_slice" class="fn">sub_slice</a>&lt;'a&gt;(
+        &amp;self,
+        start: [<a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.array.html">2</a>],
+        rows: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>,
+        cols: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>
+    ) -&gt; <a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'a, T&gt;
+       <span class="where">where T: 'a</span> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait for immutable matrix structs.</p>
+</div></details><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="tymethod.rows" class="method"><h4 class="code-header">fn <a href="#tymethod.rows" class="fn">rows</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a></h4></section></summary><div class="docblock"><p>Rows in the matrix.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.cols" class="method"><h4 class="code-header">fn <a href="#tymethod.cols" class="fn">cols</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a></h4></section></summary><div class="docblock"><p>Columns in the matrix.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.row_stride" class="method"><h4 class="code-header">fn <a href="#tymethod.row_stride" class="fn">row_stride</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a></h4></section></summary><div class="docblock"><p>Row stride in the matrix.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.as_ptr" class="method"><h4 class="code-header">fn <a href="#tymethod.as_ptr" class="fn">as_ptr</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.pointer.html">*const T</a></h4></section></summary><div class="docblock"><p>Top left index of the matrix.</p>
+</div></details></div><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.is_empty" class="method"><h4 class="code-header">fn <a href="#method.is_empty" class="fn">is_empty</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Returns true if the matrix contais no elements</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.as_slice" class="method"><h4 class="code-header">fn <a href="#method.as_slice" class="fn">as_slice</a>(&amp;self) -&gt; <a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'_, T&gt;</h4></section></summary><div class="docblock"><p>Returns a <code>MatrixSlice</code> over the whole matrix.</p>
+<h5 id="examples"><a href="#examples">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = Matrix::new(<span class="number">3</span>, <span class="number">3</span>, <span class="macro">vec!</span>[<span class="number">2.0</span>; <span class="number">9</span>]);
+<span class="kw">let </span>b = a.as_slice();</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_unchecked" class="method"><h4 class="code-header">unsafe fn <a href="#method.get_unchecked" class="fn">get_unchecked</a>(&amp;self, index: [<a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.array.html">2</a>]) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;T</a></h4></section></summary><div class="docblock"><p>Get a reference to a point in the matrix without bounds checking.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.col" class="method"><h4 class="code-header">fn <a href="#method.col" class="fn">col</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>) -&gt; <a class="struct" href="struct.Column.html" title="struct rust_ml::linalg::Column">Column</a>&lt;'_, T&gt;</h4></section></summary><div class="docblock"><p>Returns the column of a matrix at the given index.
+<code>None</code> if the index is out of bounds.</p>
+<h5 id="examples-1"><a href="#examples-1">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>mat = <span class="macro">matrix!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>;
+                  <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>;
+                  <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+<span class="kw">let </span>col = mat.col(<span class="number">1</span>);
+<span class="kw">let </span>expected = <span class="macro">matrix!</span>[<span class="number">1usize</span>; <span class="number">4</span>; <span class="number">7</span>];
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>col, expected);</code></pre></div>
+<h5 id="panics"><a href="#panics">Panics</a></h5>
+<p>Will panic if the column index is out of bounds.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.col_unchecked" class="method"><h4 class="code-header">unsafe fn <a href="#method.col_unchecked" class="fn">col_unchecked</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>) -&gt; <a class="struct" href="struct.Column.html" title="struct rust_ml::linalg::Column">Column</a>&lt;'_, T&gt;</h4></section></summary><div class="docblock"><p>Returns the column of a matrix at the given
+index without doing a bounds check.</p>
+<h5 id="examples-2"><a href="#examples-2">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>mat = <span class="macro">matrix!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>;
+                  <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>;
+                  <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+<span class="kw">let </span>col = <span class="kw">unsafe </span>{ mat.col_unchecked(<span class="number">2</span>) };
+<span class="kw">let </span>expected = <span class="macro">matrix!</span>[<span class="number">2usize</span>; <span class="number">5</span>; <span class="number">8</span>];
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>col, expected);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.row" class="method"><h4 class="code-header">fn <a href="#method.row" class="fn">row</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>) -&gt; Row&lt;'_, T&gt;</h4></section></summary><div class="docblock"><p>Returns the row of a matrix at the given index.</p>
+<h5 id="examples-3"><a href="#examples-3">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>mat = <span class="macro">matrix!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>;
+                  <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>;
+                  <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+<span class="kw">let </span>row = mat.row(<span class="number">1</span>);
+<span class="kw">let </span>expected = <span class="macro">matrix!</span>[<span class="number">3usize</span>, <span class="number">4</span>, <span class="number">5</span>];
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>row, expected);</code></pre></div>
+<h5 id="panics-1"><a href="#panics-1">Panics</a></h5>
+<p>Will panic if the row index is out of bounds.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.row_unchecked" class="method"><h4 class="code-header">unsafe fn <a href="#method.row_unchecked" class="fn">row_unchecked</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>) -&gt; Row&lt;'_, T&gt;</h4></section></summary><div class="docblock"><p>Returns the row of a matrix at the given index without doing unbounds checking</p>
+<h5 id="examples-4"><a href="#examples-4">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>mat = <span class="macro">matrix!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>;
+                  <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>;
+                  <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+<span class="kw">let </span>row = <span class="kw">unsafe </span>{ mat.row_unchecked(<span class="number">2</span>) };
+<span class="kw">let </span>expected = <span class="macro">matrix!</span>[<span class="number">6usize</span>, <span class="number">7</span>, <span class="number">8</span>];
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>row, expected);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.iter" class="method"><h4 class="code-header">fn <a href="#method.iter" class="fn">iter</a>&lt;'a&gt;(&amp;self) -&gt; SliceIter&lt;'a, T&gt;<div class="where">where
+    T: 'a,</div></h4></section></summary><div class="docblock"><p>Returns an iterator over the matrix data.</p>
+<h5 id="examples-5"><a href="#examples-5">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>mat = <span class="macro">matrix!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>;
+                  <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>;
+                  <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+<span class="kw">let </span>slice = mat.sub_slice([<span class="number">1</span>, <span class="number">1</span>], <span class="number">2</span>, <span class="number">2</span>);
+
+<span class="kw">let </span>slice_data = slice.iter().map(|v| <span class="kw-2">*</span>v).collect::&lt;Vec&lt;usize&gt;&gt;();
+<span class="macro">assert_eq!</span>(slice_data, <span class="macro">vec!</span>[<span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>]);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.col_iter" class="method"><h4 class="code-header">fn <a href="#method.col_iter" class="fn">col_iter</a>(&amp;self) -&gt; Cols&lt;'_, T&gt;</h4></section></summary><div class="docblock"><p>Iterate over the columns of the matrix.</p>
+<h5 id="examples-6"><a href="#examples-6">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">0</span>, <span class="number">1</span>;
+                <span class="number">2</span>, <span class="number">3</span>;
+                <span class="number">4</span>, <span class="number">5</span>];
+
+<span class="kw">let </span><span class="kw-2">mut </span>iter = a.col_iter();
+
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>iter.next().unwrap(), <span class="macro">matrix!</span>[ <span class="number">0</span>; <span class="number">2</span>; <span class="number">4 </span>]);
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>iter.next().unwrap(), <span class="macro">matrix!</span>[ <span class="number">1</span>; <span class="number">3</span>; <span class="number">5 </span>]);
+<span class="macro">assert!</span>(iter.next().is_none());</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.row_iter" class="method"><h4 class="code-header">fn <a href="#method.row_iter" class="fn">row_iter</a>(&amp;self) -&gt; Rows&lt;'_, T&gt;</h4></section></summary><div class="docblock"><p>Iterate over the rows of the matrix.</p>
+<h5 id="examples-7"><a href="#examples-7">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>;
+                <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>;
+                <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+
+<span class="kw">let </span><span class="kw-2">mut </span>iter = a.row_iter();
+
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>iter.next().unwrap(), <span class="macro">matrix!</span>[ <span class="number">0</span>, <span class="number">1</span>, <span class="number">2 </span>]);
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>iter.next().unwrap(), <span class="macro">matrix!</span>[ <span class="number">3</span>, <span class="number">4</span>, <span class="number">5 </span>]);
+<span class="macro">assert_matrix_eq!</span>(<span class="kw-2">*</span>iter.next().unwrap(), <span class="macro">matrix!</span>[ <span class="number">6</span>, <span class="number">7</span>, <span class="number">8 </span>]);
+<span class="macro">assert!</span>(iter.next().is_none());</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.diag_iter" class="method"><h4 class="code-header">fn <a href="#method.diag_iter" class="fn">diag_iter</a>(&amp;self, k: DiagOffset) -&gt; Diagonal&lt;'_, T, Self&gt;</h4></section></summary><div class="docblock"><p>Iterate over diagonal entries</p>
+<h5 id="examples-8"><a href="#examples-8">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">use </span>rulinalg::matrix::{DiagOffset, Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>;
+                <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>;
+                <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+<span class="comment">// Print super diag [1, 5]
+</span><span class="kw">for </span>d <span class="kw">in </span>a.diag_iter(DiagOffset::Above(<span class="number">1</span>)) {
+    <span class="macro">println!</span>(<span class="string">"{}"</span>, d);
+}
+
+<span class="comment">// Print sub diag [3, 7]
+// Equivalent to `diag_iter(DiagOffset::Below(1))`
+</span><span class="kw">for </span>d <span class="kw">in </span>a.diag_iter(DiagOffset::from(-<span class="number">1</span>)) {
+    <span class="macro">println!</span>(<span class="string">"{}"</span>, d);
+}</code></pre></div>
+<h5 id="panics-2"><a href="#panics-2">Panics</a></h5>
+<p>If using an <code>Above</code> or <code>Below</code> offset which is
+out-of-bounds this function will panic.</p>
+<p>This function will never panic if the <code>Main</code> diagonal
+offset is used.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.sum_rows" class="method"><h4 class="code-header">fn <a href="#method.sum_rows" class="fn">sum_rows</a>(&amp;self) -&gt; <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/identities/trait.Zero.html" title="trait num_traits::identities::Zero">Zero</a>&lt;Output = T&gt; + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Add.html" title="trait core::ops::arith::Add">Add</a>,</div></h4></section></summary><div class="docblock"><p>The sum of the rows of the matrix.</p>
+<p>Returns a Vector equal to the sums of elements over the matrices rows.</p>
+<p>Note that the resulting vector is identical to the sums of
+elements along each column of the matrix.</p>
+<h5 id="examples-9"><a href="#examples-9">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+
+<span class="kw">let </span>c = a.sum_rows();
+<span class="macro">assert_eq!</span>(c, <span class="macro">vector!</span>[<span class="number">4.0</span>, <span class="number">6.0</span>]);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.sum_cols" class="method"><h4 class="code-header">fn <a href="#method.sum_cols" class="fn">sum_cols</a>(&amp;self) -&gt; <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/identities/trait.Zero.html" title="trait num_traits::identities::Zero">Zero</a>&lt;Output = T&gt; + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Add.html" title="trait core::ops::arith::Add">Add</a>,</div></h4></section></summary><div class="docblock"><p>The sum of the columns of the matrix.</p>
+<p>Returns a Vector equal to the sums of elements over the matrices columns.</p>
+<p>Note that the resulting vector is identical to the sums of
+elements along each row of the matrix.</p>
+<h5 id="examples-10"><a href="#examples-10">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+
+<span class="kw">let </span>c = a.sum_cols();
+<span class="macro">assert_eq!</span>(c, <span class="macro">vector!</span>[<span class="number">3.0</span>, <span class="number">7.0</span>]);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.norm" class="method"><h4 class="code-header">fn <a href="#method.norm" class="fn">norm</a>&lt;N&gt;(&amp;self, norm: N) -&gt; T<div class="where">where
+    N: MatrixNorm&lt;T, Self&gt;,
+    T: <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/float/trait.Float.html" title="trait num_traits::float::Float">Float</a>,</div></h4></section></summary><div class="docblock"><p>Compute given matrix norm for matrix.</p>
+<h5 id="examples-11"><a href="#examples-11">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::BaseMatrix;
+<span class="kw">use </span>rulinalg::norm::Euclidean;
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">3.0</span>, <span class="number">4.0</span>];
+<span class="kw">let </span>c = a.norm(Euclidean);
+
+<span class="macro">assert_eq!</span>(c, <span class="number">5.0</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.metric" class="method"><h4 class="code-header">fn <a href="#method.metric" class="fn">metric</a>&lt;'a, 'b, B, M&gt;(&amp;'a self, mat: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;'b B</a>, metric: M) -&gt; T<div class="where">where
+    B: 'b + <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt;,
+    M: MatrixMetric&lt;'a, 'b, T, Self, B&gt;,</div></h4></section></summary><div class="docblock"><p>Compute the metric distance between two matrices.</p>
+<h5 id="examples-12"><a href="#examples-12">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::BaseMatrix;
+<span class="kw">use </span>rulinalg::norm::Euclidean;
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">3.0</span>, <span class="number">4.0</span>;
+                <span class="number">1.0</span>, <span class="number">2.0</span>];
+<span class="kw">let </span>b = <span class="macro">matrix!</span>[<span class="number">2.0</span>, <span class="number">5.0</span>;
+                <span class="number">0.0</span>, <span class="number">3.0</span>];
+
+<span class="comment">// Compute the square root of the sum of
+// elementwise squared-differences
+</span><span class="kw">let </span>c = a.metric(<span class="kw-2">&amp;</span>b, Euclidean);
+
+<span class="macro">assert_eq!</span>(c, <span class="number">2.0</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.sum" class="method"><h4 class="code-header">fn <a href="#method.sum" class="fn">sum</a>(&amp;self) -&gt; T<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/identities/trait.Zero.html" title="trait num_traits::identities::Zero">Zero</a>&lt;Output = T&gt; + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Add.html" title="trait core::ops::arith::Add">Add</a>,</div></h4></section></summary><div class="docblock"><p>The sum of all elements in the matrix</p>
+<h5 id="examples-13"><a href="#examples-13">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::BaseMatrix;
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+
+<span class="kw">let </span>c = a.sum();
+<span class="macro">assert_eq!</span>(c, <span class="number">10.0</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.min" class="method"><h4 class="code-header">fn <a href="#method.min" class="fn">min</a>(&amp;self, axis: <a class="enum" href="enum.Axes.html" title="enum rust_ml::linalg::Axes">Axes</a>) -&gt; <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/cmp/trait.PartialOrd.html" title="trait core::cmp::PartialOrd">PartialOrd</a>,</div></h4></section></summary><div class="docblock"><p>The min of the specified axis of the matrix.</p>
+<h5 id="examples-14"><a href="#examples-14">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix, Axes};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+
+<span class="kw">let </span>cmin = a.min(Axes::Col);
+<span class="macro">assert_eq!</span>(cmin, <span class="macro">vector!</span>[<span class="number">1.0</span>, <span class="number">3.0</span>]);
+
+<span class="kw">let </span>rmin = a.min(Axes::Row);
+<span class="macro">assert_eq!</span>(rmin, <span class="macro">vector!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>]);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.max" class="method"><h4 class="code-header">fn <a href="#method.max" class="fn">max</a>(&amp;self, axis: <a class="enum" href="enum.Axes.html" title="enum rust_ml::linalg::Axes">Axes</a>) -&gt; <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/cmp/trait.PartialOrd.html" title="trait core::cmp::PartialOrd">PartialOrd</a>,</div></h4></section></summary><div class="docblock"><p>The max of the specified axis of the matrix.</p>
+<h5 id="examples-15"><a href="#examples-15">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{BaseMatrix, Axes};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+
+<span class="kw">let </span>cmax = a.max(Axes::Col);
+<span class="macro">assert_eq!</span>(cmax, <span class="macro">vector!</span>[<span class="number">2.0</span>, <span class="number">4.0</span>]);
+
+<span class="kw">let </span>rmax = a.max(Axes::Row);
+<span class="macro">assert_eq!</span>(rmax, <span class="macro">vector!</span>[<span class="number">3.0</span>, <span class="number">4.0</span>]);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.into_matrix" class="method"><h4 class="code-header">fn <a href="#method.into_matrix" class="fn">into_matrix</a>(self) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,</div></h4></section></summary><div class="docblock"><p>Convert the matrix struct into a owned Matrix.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.select_rows" class="method"><h4 class="code-header">fn <a href="#method.select_rows" class="fn">select_rows</a>&lt;'a, I&gt;(&amp;self, rows: I) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,
+    I: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = &amp;'a <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>&gt;,
+    &lt;I as <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&gt;::<a class="associatedtype" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html#associatedtype.IntoIter" title="type core::iter::traits::collect::IntoIterator::IntoIter">IntoIter</a>: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/exact_size/trait.ExactSizeIterator.html" title="trait core::iter::traits::exact_size::ExactSizeIterator">ExactSizeIterator</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a>,</div></h4></section></summary><div class="docblock"><p>Select rows from matrix</p>
+<h5 id="examples-16"><a href="#examples-16">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = Matrix::&lt;f64&gt;::ones(<span class="number">3</span>,<span class="number">3</span>);
+
+<span class="kw">let </span>b = <span class="kw-2">&amp;</span>a.select_rows(<span class="kw-2">&amp;</span>[<span class="number">2</span>]);
+<span class="macro">assert_eq!</span>(b.rows(), <span class="number">1</span>);
+<span class="macro">assert_eq!</span>(b.cols(), <span class="number">3</span>);
+
+<span class="kw">let </span>c = <span class="kw-2">&amp;</span>a.select_rows(<span class="kw-2">&amp;</span>[<span class="number">1</span>,<span class="number">2</span>]);
+<span class="macro">assert_eq!</span>(c.rows(), <span class="number">2</span>);
+<span class="macro">assert_eq!</span>(c.cols(), <span class="number">3</span>);</code></pre></div>
+<h5 id="panics-3"><a href="#panics-3">Panics</a></h5>
+<ul>
+<li>Panics if row indices exceed the matrix dimensions.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.select_cols" class="method"><h4 class="code-header">fn <a href="#method.select_cols" class="fn">select_cols</a>&lt;'a, I&gt;(&amp;self, cols: I) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,
+    I: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&lt;Item = &amp;'a <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>&gt;,
+    &lt;I as <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html" title="trait core::iter::traits::collect::IntoIterator">IntoIterator</a>&gt;::<a class="associatedtype" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/collect/trait.IntoIterator.html#associatedtype.IntoIter" title="type core::iter::traits::collect::IntoIterator::IntoIter">IntoIter</a>: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/iter/traits/exact_size/trait.ExactSizeIterator.html" title="trait core::iter::traits::exact_size::ExactSizeIterator">ExactSizeIterator</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a>,</div></h4></section></summary><div class="docblock"><p>Select columns from matrix</p>
+<h5 id="examples-17"><a href="#examples-17">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = Matrix::&lt;f64&gt;::ones(<span class="number">3</span>,<span class="number">3</span>);
+<span class="kw">let </span>b = <span class="kw-2">&amp;</span>a.select_cols(<span class="kw-2">&amp;</span>[<span class="number">2</span>]);
+<span class="macro">assert_eq!</span>(b.rows(), <span class="number">3</span>);
+<span class="macro">assert_eq!</span>(b.cols(), <span class="number">1</span>);
+
+<span class="kw">let </span>c = <span class="kw-2">&amp;</span>a.select_cols(<span class="kw-2">&amp;</span>[<span class="number">1</span>,<span class="number">2</span>]);
+<span class="macro">assert_eq!</span>(c.rows(), <span class="number">3</span>);
+<span class="macro">assert_eq!</span>(c.cols(), <span class="number">2</span>);</code></pre></div>
+<h5 id="panics-4"><a href="#panics-4">Panics</a></h5>
+<ul>
+<li>Panics if column indices exceed the matrix dimensions.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.elemul" class="method"><h4 class="code-header">fn <a href="#method.elemul" class="fn">elemul</a>(&amp;self, m: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;Self</a>) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Mul.html" title="trait core::ops::arith::Mul">Mul</a>&lt;Output = T&gt;,</div></h4></section></summary><div class="docblock"><p>The elementwise product of two matrices.</p>
+<h5 id="examples-18"><a href="#examples-18">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+<span class="kw">let </span>b = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+
+<span class="kw">let </span>c = <span class="kw-2">&amp;</span>a.elemul(<span class="kw-2">&amp;</span>b);
+<span class="macro">assert_matrix_eq!</span>(c, <span class="kw-2">&amp;</span><span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">4.0</span>; <span class="number">9.0</span>, <span class="number">16.0</span>]);
+}</code></pre></div>
+<h5 id="panics-5"><a href="#panics-5">Panics</a></h5>
+<ul>
+<li>The matrices have different row counts.</li>
+<li>The matrices have different column counts.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.elediv" class="method"><h4 class="code-header">fn <a href="#method.elediv" class="fn">elediv</a>(&amp;self, m: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;Self</a>) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/ops/arith/trait.Div.html" title="trait core::ops::arith::Div">Div</a>&lt;Output = T&gt;,</div></h4></section></summary><div class="docblock"><p>The elementwise division of two matrices.</p>
+<h5 id="examples-19"><a href="#examples-19">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+<span class="kw">let </span>b = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>];
+
+<span class="kw">let </span>c = <span class="kw-2">&amp;</span>a.elediv(<span class="kw-2">&amp;</span>b);
+<span class="macro">assert_matrix_eq!</span>(c, <span class="kw-2">&amp;</span><span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">1.0</span>; <span class="number">1.0</span>, <span class="number">1.0</span>]);</code></pre></div>
+<h5 id="panics-6"><a href="#panics-6">Panics</a></h5>
+<ul>
+<li>The matrices have different row counts.</li>
+<li>The matrices have different column counts.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.select" class="method"><h4 class="code-header">fn <a href="#method.select" class="fn">select</a>(&amp;self, rows: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>], cols: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>]) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,</div></h4></section></summary><div class="docblock"><p>Select block matrix from matrix</p>
+<h5 id="examples-20"><a href="#examples-20">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = Matrix::&lt;f64&gt;::identity(<span class="number">3</span>);
+<span class="kw">let </span>b = <span class="kw-2">&amp;</span>a.select(<span class="kw-2">&amp;</span>[<span class="number">0</span>,<span class="number">1</span>], <span class="kw-2">&amp;</span>[<span class="number">1</span>,<span class="number">2</span>]);
+
+<span class="comment">// We get the 2x2 block matrix in the upper right corner.
+</span><span class="macro">assert_eq!</span>(b.rows(), <span class="number">2</span>);
+<span class="macro">assert_eq!</span>(b.cols(), <span class="number">2</span>);
+
+<span class="comment">// Prints [0,0, 1,0]
+</span><span class="macro">println!</span>(<span class="string">"{:?}"</span>, b.data());</code></pre></div>
+<h5 id="panics-7"><a href="#panics-7">Panics</a></h5>
+<ul>
+<li>Panics if row or column indices exceed the matrix dimensions.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.hcat" class="method"><h4 class="code-header">fn <a href="#method.hcat" class="fn">hcat</a>&lt;S&gt;(&amp;self, m: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;S</a>) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,
+    S: <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt;,</div></h4></section></summary><div class="docblock"><p>Horizontally concatenates two matrices. With self on the left.</p>
+<h5 id="examples-21"><a href="#examples-21">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">3.0</span>, <span class="number">4.0</span>;
+                <span class="number">5.0</span>, <span class="number">6.0</span>];
+<span class="kw">let </span>b = <span class="macro">matrix!</span>[<span class="number">4.0</span>;
+                <span class="number">5.0</span>;
+                <span class="number">6.0</span>];
+
+<span class="kw">let </span>c = <span class="kw-2">&amp;</span>a.hcat(<span class="kw-2">&amp;</span>b);
+<span class="macro">assert_eq!</span>(c.cols(), a.cols() + b.cols());
+<span class="macro">assert_eq!</span>(c[[<span class="number">1</span>, <span class="number">2</span>]], <span class="number">5.0</span>);</code></pre></div>
+<h5 id="panics-8"><a href="#panics-8">Panics</a></h5>
+<ul>
+<li>Self and m have different row counts.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.vcat" class="method"><h4 class="code-header">fn <a href="#method.vcat" class="fn">vcat</a>&lt;S&gt;(&amp;self, m: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.reference.html">&amp;S</a>) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,
+    S: <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt;,</div></h4></section></summary><div class="docblock"><p>Vertically concatenates two matrices. With self on top.</p>
+<h5 id="examples-22"><a href="#examples-22">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>;
+                <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>];
+<span class="kw">let </span>b = <span class="macro">matrix!</span>[<span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>];;
+
+<span class="kw">let </span>c = <span class="kw-2">&amp;</span>a.vcat(<span class="kw-2">&amp;</span>b);
+<span class="macro">assert_eq!</span>(c.rows(), a.rows() + b.rows());
+<span class="macro">assert_eq!</span>(c[[<span class="number">2</span>, <span class="number">2</span>]], <span class="number">6.0</span>);</code></pre></div>
+<h5 id="panics-9"><a href="#panics-9">Panics</a></h5>
+<ul>
+<li>Self and m have different column counts.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.diag" class="method"><h4 class="code-header">fn <a href="#method.diag" class="fn">diag</a>(&amp;self) -&gt; Diagonal&lt;'_, T, Self&gt;</h4></section></summary><div class="docblock"><p>Extract the diagonal of the matrix</p>
+<p>Examples</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">use </span>rulinalg::matrix::BaseMatrix;
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>;
+                <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>;
+                <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>].diag().cloned().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+<span class="kw">let </span>b = <span class="macro">matrix!</span>[<span class="number">1</span>, <span class="number">2</span>;
+                <span class="number">3</span>, <span class="number">4</span>;
+                <span class="number">5</span>, <span class="number">6</span>].diag().cloned().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+
+<span class="macro">assert_eq!</span>(a, <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>]);
+<span class="macro">assert_eq!</span>(b, <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">4</span>]);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.transpose" class="method"><h4 class="code-header">fn <a href="#method.transpose" class="fn">transpose</a>(&amp;self) -&gt; <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>,</div></h4></section></summary><div class="docblock"><p>Tranposes the given matrix</p>
+<h5 id="examples-23"><a href="#examples-23">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>mat = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>;
+                  <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>];
+
+<span class="kw">let </span>expected = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">4.0</span>;
+                       <span class="number">2.0</span>, <span class="number">5.0</span>;
+                       <span class="number">3.0</span>, <span class="number">6.0</span>];
+<span class="macro">assert_matrix_eq!</span>(mat.transpose(), expected);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_diag" class="method"><h4 class="code-header">fn <a href="#method.is_diag" class="fn">is_diag</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.bool.html">bool</a><div class="where">where
+    T: <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/identities/trait.Zero.html" title="trait num_traits::identities::Zero">Zero</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a>,</div></h4></section></summary><div class="docblock"><p>Checks if matrix is diagonal.</p>
+<h5 id="examples-24"><a href="#examples-24">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">0.0</span>;
+                <span class="number">0.0</span>, <span class="number">1.0</span>];
+<span class="kw">let </span>a_diag = a.is_diag();
+
+<span class="macro">assert_eq!</span>(a_diag, <span class="bool-val">true</span>);
+
+<span class="kw">let </span>b = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">0.0</span>;
+                <span class="number">1.0</span>, <span class="number">0.0</span>];
+<span class="kw">let </span>b_diag = b.is_diag();
+
+<span class="macro">assert_eq!</span>(b_diag, <span class="bool-val">false</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.solve_u_triangular" class="method"><h4 class="code-header">fn <a href="#method.solve_u_triangular" class="fn">solve_u_triangular</a>(&amp;self, y: <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.76.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;, Error&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/any/trait.Any.html" title="trait core::any::Any">Any</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/float/trait.Float.html" title="trait num_traits::float::Float">Float</a>,</div></h4></section></summary><div class="docblock"><p>Solves an upper triangular linear system.</p>
+<p>Given a matrix <code>A</code> and a vector <code>b</code>, this function returns the
+solution of the upper triangular system <code>Ux = b</code>, where <code>U</code> is
+the upper triangular part of <code>A</code>.</p>
+<h5 id="examples-25"><a href="#examples-25">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::BaseMatrix;
+<span class="kw">use </span>std::f32;
+
+<span class="kw">let </span>u = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">2.0</span>;
+                <span class="number">0.0</span>, <span class="number">1.0</span>];
+<span class="kw">let </span>y = <span class="macro">vector!</span>[<span class="number">3.0</span>, <span class="number">1.0</span>];
+
+<span class="kw">let </span>x = u.solve_u_triangular(y).expect(<span class="string">"A solution should exist!"</span>);
+<span class="macro">assert!</span>((x[<span class="number">0</span>] - <span class="number">1.0</span>) &lt; f32::EPSILON);
+<span class="macro">assert!</span>((x[<span class="number">1</span>] - <span class="number">1.0</span>) &lt; f32::EPSILON);</code></pre></div>
+<h5 id="panics-10"><a href="#panics-10">Panics</a></h5>
+<ul>
+<li>Vector size and matrix column count are not equal.</li>
+</ul>
+<h5 id="failures"><a href="#failures">Failures</a></h5>
+<ul>
+<li>There is no valid solution to the system (matrix is singular).</li>
+<li>The matrix is empty.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.solve_l_triangular" class="method"><h4 class="code-header">fn <a href="#method.solve_l_triangular" class="fn">solve_l_triangular</a>(&amp;self, y: <a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.76.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="struct.Vector.html" title="struct rust_ml::linalg::Vector">Vector</a>&lt;T&gt;, Error&gt;<div class="where">where
+    T: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/any/trait.Any.html" title="trait core::any::Any">Any</a> + <a class="trait" href="https://docs.rs/num-traits/0.2/num_traits/float/trait.Float.html" title="trait num_traits::float::Float">Float</a>,</div></h4></section></summary><div class="docblock"><p>Solves a lower triangular linear system.</p>
+<p>Given a matrix <code>A</code> and a vector <code>b</code>, this function returns the
+solution of the lower triangular system <code>Lx = b</code>, where <code>L</code> is
+the lower triangular part of <code>A</code>.</p>
+<h5 id="examples-26"><a href="#examples-26">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::BaseMatrix;
+<span class="kw">use </span>std::f32;
+
+<span class="kw">let </span>l = <span class="macro">matrix!</span>[<span class="number">1.0</span>, <span class="number">0.0</span>;
+                <span class="number">2.0</span>, <span class="number">1.0</span>];
+<span class="kw">let </span>y = <span class="macro">vector!</span>[<span class="number">1.0</span>, <span class="number">3.0</span>];
+
+<span class="kw">let </span>x = l.solve_l_triangular(y).expect(<span class="string">"A solution should exist!"</span>);
+<span class="macro">println!</span>(<span class="string">"{:?}"</span>, x);
+<span class="macro">assert!</span>((x[<span class="number">0</span>] - <span class="number">1.0</span>) &lt; f32::EPSILON);
+<span class="macro">assert!</span>((x[<span class="number">1</span>] - <span class="number">1.0</span>) &lt; f32::EPSILON);</code></pre></div>
+<h5 id="panics-11"><a href="#panics-11">Panics</a></h5>
+<ul>
+<li>Vector size and matrix column count are not equal.</li>
+</ul>
+<h5 id="failures-1"><a href="#failures-1">Failures</a></h5>
+<ul>
+<li>There is no valid solution to the system (matrix is singular).</li>
+<li>The matrix is empty.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.split_at" class="method"><h4 class="code-header">fn <a href="#method.split_at" class="fn">split_at</a>(
+    &amp;self,
+    mid: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>,
+    axis: <a class="enum" href="enum.Axes.html" title="enum rust_ml::linalg::Axes">Axes</a>
+) -&gt; (<a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'_, T&gt;, <a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'_, T&gt;)</h4></section></summary><div class="docblock"><p>Split the matrix at the specified axis returning two <code>MatrixSlice</code>s.</p>
+<h5 id="examples-27"><a href="#examples-27">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Axes, Matrix, BaseMatrix};
+
+<span class="kw">let </span>a = Matrix::new(<span class="number">3</span>,<span class="number">3</span>, <span class="macro">vec!</span>[<span class="number">2.0</span>; <span class="number">9</span>]);
+<span class="kw">let </span>(b,c) = a.split_at(<span class="number">1</span>, Axes::Row);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.sub_slice" class="method"><h4 class="code-header">fn <a href="#method.sub_slice" class="fn">sub_slice</a>&lt;'a&gt;(
+    &amp;self,
+    start: [<a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>; <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.array.html">2</a>],
+    rows: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>,
+    cols: <a class="primitive" href="https://doc.rust-lang.org/1.76.0/std/primitive.usize.html">usize</a>
+) -&gt; <a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'a, T&gt;<div class="where">where
+    T: 'a,</div></h4></section></summary><div class="docblock"><p>Produce a <code>MatrixSlice</code> from an existing matrix.</p>
+<h5 id="examples-28"><a href="#examples-28">Examples</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>rulinalg::matrix::{Matrix, BaseMatrix, MatrixSlice};
+
+<span class="kw">let </span>a = Matrix::new(<span class="number">3</span>,<span class="number">3</span>, (<span class="number">0</span>..<span class="number">9</span>).collect::&lt;Vec&lt;usize&gt;&gt;());
+<span class="kw">let </span>slice = MatrixSlice::from_matrix(<span class="kw-2">&amp;</span>a, [<span class="number">1</span>,<span class="number">1</span>], <span class="number">2</span>, <span class="number">2</span>);
+<span class="kw">let </span>new_slice = slice.sub_slice([<span class="number">0</span>,<span class="number">0</span>], <span class="number">1</span>, <span class="number">1</span>);</code></pre></div>
+</div></details></div><h2 id="object-safety" class="section-header">Object Safety<a href="#object-safety" class="anchor">§</a></h2><div class="object-safety-info">This trait is <b>not</b> <a href="https://doc.rust-lang.org/1.76.0/reference/items/traits.html#object-safety">object safe</a>.</div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-BaseMatrix%3CT%3E-for-Column%3C'a,+T%3E" class="impl"><a href="#impl-BaseMatrix%3CT%3E-for-Column%3C'a,+T%3E" class="anchor">§</a><h3 class="code-header">impl&lt;'a, T&gt; <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt; for <a class="struct" href="struct.Column.html" title="struct rust_ml::linalg::Column">Column</a>&lt;'a, T&gt;</h3></section><section id="impl-BaseMatrix%3CT%3E-for-MatrixSlice%3C'a,+T%3E" class="impl"><a href="#impl-BaseMatrix%3CT%3E-for-MatrixSlice%3C'a,+T%3E" class="anchor">§</a><h3 class="code-header">impl&lt;'a, T&gt; <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt; for <a class="struct" href="struct.MatrixSlice.html" title="struct rust_ml::linalg::MatrixSlice">MatrixSlice</a>&lt;'a, T&gt;</h3></section><section id="impl-BaseMatrix%3CT%3E-for-MatrixSliceMut%3C'a,+T%3E" class="impl"><a href="#impl-BaseMatrix%3CT%3E-for-MatrixSliceMut%3C'a,+T%3E" class="anchor">§</a><h3 class="code-header">impl&lt;'a, T&gt; <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt; for <a class="struct" href="struct.MatrixSliceMut.html" title="struct rust_ml::linalg::MatrixSliceMut">MatrixSliceMut</a>&lt;'a, T&gt;</h3></section><section id="impl-BaseMatrix%3CT%3E-for-ColumnMut%3C'a,+T%3E" class="impl"><a href="#impl-BaseMatrix%3CT%3E-for-ColumnMut%3C'a,+T%3E" class="anchor">§</a><h3 class="code-header">impl&lt;'a, T&gt; <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt; for ColumnMut&lt;'a, T&gt;</h3></section><section id="impl-BaseMatrix%3CT%3E-for-Row%3C'a,+T%3E" class="impl"><a href="#impl-BaseMatrix%3CT%3E-for-Row%3C'a,+T%3E" class="anchor">§</a><h3 class="code-header">impl&lt;'a, T&gt; <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt; for Row&lt;'a, T&gt;</h3></section><section id="impl-BaseMatrix%3CT%3E-for-RowMut%3C'a,+T%3E" class="impl"><a href="#impl-BaseMatrix%3CT%3E-for-RowMut%3C'a,+T%3E" class="anchor">§</a><h3 class="code-header">impl&lt;'a, T&gt; <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt; for RowMut&lt;'a, T&gt;</h3></section><section id="impl-BaseMatrix%3CT%3E-for-Matrix%3CT%3E" class="impl"><a href="#impl-BaseMatrix%3CT%3E-for-Matrix%3CT%3E" class="anchor">§</a><h3 class="code-header">impl&lt;T&gt; <a class="trait" href="trait.BaseMatrix.html" title="trait rust_ml::linalg::BaseMatrix">BaseMatrix</a>&lt;T&gt; for <a class="struct" href="struct.Matrix.html" title="struct rust_ml::linalg::Matrix">Matrix</a>&lt;T&gt;</h3></section></div><script src="../../trait.impl/rulinalg/matrix/base/trait.BaseMatrix.js" data-ignore-extern-crates="rulinalg" async></script></section></div></main></body></html>
