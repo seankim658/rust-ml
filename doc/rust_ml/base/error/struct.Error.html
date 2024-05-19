@@ -2,21 +2,21 @@
     <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../rust_ml/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Struct <a href="../../index.html">rust_ml</a>::<wbr><a href="../index.html">base</a>::<wbr><a href="index.html">error</a>::<wbr><a class="struct" href="#">Error</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../../src/rust_ml/base/error.rs.html#21-26">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub struct Error { <span class="comment">/* private fields */</span> }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Struct for an error.</p>
 </div></details><h2 id="implementations" class="section-header">Implementations<a href="#implementations" class="anchor">§</a></h2><div id="implementations-list"><details class="toggle implementors-toggle" open><summary><section id="impl-Error" class="impl"><a class="src rightside" href="../../../src/rust_ml/base/error.rs.html#28-59">source</a><a href="#impl-Error" class="anchor">§</a><h3 class="code-header">impl <a class="struct" href="struct.Error.html" title="struct rust_ml::base::error::Error">Error</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.new" class="method"><a class="src rightside" href="../../../src/rust_ml/base/error.rs.html#39-46">source</a><h4 class="code-header">pub fn <a href="#method.new" class="fn">new</a>&lt;E&gt;(kind: <a class="enum" href="enum.ErrorKind.html" title="enum rust_ml::base::error::ErrorKind">ErrorKind</a>, error: E) -&gt; <a class="struct" href="struct.Error.html" title="struct rust_ml::base::error::Error">Error</a><div class="where">where
     E: <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="https://doc.rust-lang.org/1.76.0/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/error/trait.Error.html" title="trait core::error::Error">Error</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/1.76.0/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a>&gt;&gt;,</div></h4></section></summary><div class="docblock"><p>Constructor.</p>
-<p>Parameters:</p>
+<h6 id="parameters"><a href="#parameters">Parameters:</a></h6>
 <ul>
 <li>kind: The ErrorKind enum.</li>
 <li>error: Generic that implements Into Box.</li>
 </ul>
-<p>Returns:</p>
+<h6 id="returns"><a href="#returns">Returns:</a></h6>
 <ul>
 <li>New error struct.</li>
 </ul>
 </div></details><details class="toggle method-toggle" open><summary><section id="method.kind" class="method"><a class="src rightside" href="../../../src/rust_ml/base/error.rs.html#56-58">source</a><h4 class="code-header">pub fn <a href="#method.kind" class="fn">kind</a>(&amp;self) -&gt; &amp;<a class="enum" href="enum.ErrorKind.html" title="enum rust_ml::base::error::ErrorKind">ErrorKind</a></h4></section></summary><div class="docblock"><p>Method to get the error kind variant.</p>
-<p>Parameters:</p>
+<h6 id="parameters-1"><a href="#parameters-1">Parameters:</a></h6>
 <ul>
 <li>&amp;self: Reference to self (of type Error).</li>
 </ul>
-<p>Returns:</p>
+<h6 id="returns-1"><a href="#returns-1">Returns:</a></h6>
 <ul>
 <li>The ErrorKind variant.</li>
 </ul>

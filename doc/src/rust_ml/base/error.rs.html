@@ -97,11 +97,11 @@
 
     <span class="doccomment">/// Constructor.
     ///
-    /// Parameters:
+    /// #### Parameters:
     /// - kind: The ErrorKind enum.
     /// - error: Generic that implements Into Box.
     ///
-    /// Returns:
+    /// #### Returns:
     /// - New error struct.
     ///
     </span><span class="kw">pub fn </span>new&lt;E&gt;(kind: ErrorKind, error: E) -&gt; Error
@@ -115,10 +115,10 @@
 
     <span class="doccomment">/// Method to get the error kind variant.
     ///
-    /// Parameters:
+    /// #### Parameters:
     /// - &amp;self: Reference to self (of type Error).
     ///
-    /// Returns:
+    /// #### Returns:
     /// - The ErrorKind variant.
     ///
     </span><span class="kw">pub fn </span>kind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>ErrorKind {
