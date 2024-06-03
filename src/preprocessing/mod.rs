@@ -23,14 +23,14 @@ pub trait Preprocessor<I> {
     type O;
 
     /// Function to scale the data. 
-    fn transform(&mut self, inputs: &I) -> MLResult<Self::O>;
+    fn transform(&mut self, input: &I) -> MLResult<Self::O>;
 }
 
 /// Trait for the preprocessor fitters.
 pub trait PreprocessorFitter<I, O: Preprocessor<I>> {
 
     /// Fit the preprocessor to the dataset.
-    fn fit(self, inputs: &I) -> MLResult<O>;
+    fn fit(self, input: &I) -> MLResult<O>;
 
     /// Get the fit status for the preprocessor fitter.
     fn fit_status(&self) -> &FitStatus;

@@ -68,14 +68,14 @@ where
     /// Transforms the Vector based on the fitted Label Encoder hash map.
     ///
     /// #### Parameters:
-    /// - inputs: A reference to the label vector.
+    /// - input: A reference to the label vector.
     ///
     /// #### Returns:
     /// - MLResult wrapped label encoded label vector.
     ///
-    fn transform(&mut self, inputs: &Vector<K>) -> MLResult<Vector<V>> {
-        let mut mapped_vec = Vec::with_capacity(inputs.size());
-        for element in inputs {
+    fn transform(&mut self, input: &Vector<K>) -> MLResult<Vector<V>> {
+        let mut mapped_vec = Vec::with_capacity(input.size());
+        for element in input {
             let mapped_value = self.fitter.label_map.get(&element);
             match mapped_value {
                 Some(v) => mapped_vec.push(*v),
