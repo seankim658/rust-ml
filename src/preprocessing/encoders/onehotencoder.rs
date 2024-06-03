@@ -50,7 +50,7 @@ where
 {
     type O = Dataset<Matrix<f64>, Vector<Y>>;
 
-    /// One hot encodes the categorical columns and returns a Dataset struct.
+    /// One hot encodes the categorical columns and returns a new Dataset struct.
     /// 
     /// #### Parameters:
     /// - input: Reference to the MixedDataset to encode.
@@ -156,7 +156,7 @@ impl<Y> PreprocessorFitter<MixedDataset<Vector<Y>>, OneHotEncoder<Y>> for OneHot
 where
     Y: Clone + Debug,
 {
-    /// Fits the one hot encoder on a given dataset column.
+    /// Fits the one hot encoder on a given dataset's categorical columns.
     ///
     /// #### Parameters:
     /// - input: Reference to the MixedDataset to encode the categorical columns for.
