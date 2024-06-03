@@ -249,7 +249,7 @@
 {
     <span class="kw">type </span>O = Dataset&lt;Matrix&lt;f64&gt;, Vector&lt;Y&gt;&gt;;
 
-    <span class="doccomment">/// One hot encodes the categorical columns and returns a Dataset struct.
+    <span class="doccomment">/// One hot encodes the categorical columns and returns a new Dataset struct.
     /// 
     /// #### Parameters:
     /// - input: Reference to the MixedDataset to encode.
@@ -355,7 +355,7 @@
 <span class="kw">where
     </span>Y: Clone + Debug,
 {
-    <span class="doccomment">/// Fits the one hot encoder on a given dataset column.
+    <span class="doccomment">/// Fits the one hot encoder on a given dataset's categorical columns.
     ///
     /// #### Parameters:
     /// - input: Reference to the MixedDataset to encode the categorical columns for.

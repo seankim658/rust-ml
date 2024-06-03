@@ -78,14 +78,14 @@
     </span><span class="kw">type </span>O;
 
     <span class="doccomment">/// Function to scale the data. 
-    </span><span class="kw">fn </span>transform(<span class="kw-2">&amp;mut </span><span class="self">self</span>, inputs: <span class="kw-2">&amp;</span>I) -&gt; MLResult&lt;<span class="self">Self</span>::O&gt;;
+    </span><span class="kw">fn </span>transform(<span class="kw-2">&amp;mut </span><span class="self">self</span>, input: <span class="kw-2">&amp;</span>I) -&gt; MLResult&lt;<span class="self">Self</span>::O&gt;;
 }
 
 <span class="doccomment">/// Trait for the preprocessor fitters.
 </span><span class="kw">pub trait </span>PreprocessorFitter&lt;I, O: Preprocessor&lt;I&gt;&gt; {
 
     <span class="doccomment">/// Fit the preprocessor to the dataset.
-    </span><span class="kw">fn </span>fit(<span class="self">self</span>, inputs: <span class="kw-2">&amp;</span>I) -&gt; MLResult&lt;O&gt;;
+    </span><span class="kw">fn </span>fit(<span class="self">self</span>, input: <span class="kw-2">&amp;</span>I) -&gt; MLResult&lt;O&gt;;
 
     <span class="doccomment">/// Get the fit status for the preprocessor fitter.
     </span><span class="kw">fn </span>fit_status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>FitStatus;
